@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { User } from 'lucide-react';
+import { User, Layers, BrainCircuit, Terminal, Trophy, GraduationCap } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
 import personal from '@/data/personal.json';
@@ -198,29 +198,95 @@ export function Workspace1(): React.ReactElement {
 
       {/* About */}
       <Win title="about.md" delay={0.11}>
-        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          <div>
-            <User size={28} color={COLORS.mauve} style={{ marginBottom: 12 }} />
-            <p style={{ fontSize: '1rem', color: COLORS.subtext0, lineHeight: 1.75, marginBottom: 10 }}>
-              {personal.bio}
-            </p>
-            {/* Education highlight */}
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+          {/* Markdown-style heading */}
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <span style={{ color: COLORS.overlay0, fontSize: '0.82rem', fontFamily: "'JetBrains Mono', monospace" }}>#</span>
+              <span style={{ fontSize: '1.15rem', fontWeight: 700, color: COLORS.text }}>About Me</span>
+            </div>
+            <div style={{ height: 2, width: '100%', background: `linear-gradient(90deg, ${COLORS.mauve}, ${COLORS.blue}, transparent)`, borderRadius: 2 }} />
+          </div>
+
+          {/* Bio — concise & impactful */}
+          <p style={{
+            fontSize: '0.92rem',
+            color: COLORS.subtext0,
+            lineHeight: 1.7,
+            marginBottom: 12,
+            borderLeft: `2px solid ${COLORS.mauve}33`,
+            paddingLeft: 12,
+          }}>
+            {personal.bio}
+          </p>
+
+          {/* Key highlights */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 14 }}>
+            {([
+              { Icon: Layers,       text: 'Full-Stack Developer — React, Next.js, NestJS, FastAPI',          color: COLORS.green },
+              { Icon: BrainCircuit, text: "AI & Data Science — LangChain, Scikit-learn, LLM Integration",   color: COLORS.teal },
+              { Icon: Terminal,     text: 'Linux Power User — Arch, Neovim, Hyprland, productivity-driven',  color: COLORS.peach },
+              { Icon: Trophy,       text: 'Tech Leader — 20+ members managed, 4 workshops delivered',         color: COLORS.yellow },
+            ] as const).map(({ Icon, text, color }) => (
+              <div
+                key={text}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 9,
+                  fontSize: '0.85rem',
+                  color: COLORS.subtext1,
+                }}
+              >
+                <Icon size={15} color={color} style={{ flexShrink: 0 }} />
+                <span>
+                  <span style={{ color, fontWeight: 600 }}>{text.split('—')[0]}—</span>
+                  {text.split('—').slice(1).join('—')}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Education — compact badges */}
+          <div style={{ marginTop: 'auto' }}>
+            <span style={{ color: COLORS.overlay0, fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace", display: 'block', marginBottom: 6 }}>## Education</span>
             {education.slice(0, 2).map((ed) => (
               <div
                 key={ed.id}
                 style={{
                   display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 6,
+                  alignItems: 'center',
+                  gap: 8,
                   marginBottom: 5,
-                  fontSize: '0.95rem',
+                  fontSize: '0.85rem',
                   color: COLORS.subtext0,
                 }}
               >
-                <span style={{ color: COLORS.teal, marginTop: 1 }}>▸</span>
+                <span style={{
+                  display: 'inline-block',
+                  width: 6, height: 6,
+                  borderRadius: '50%',
+                  background: ed.status === 'In Progress' ? COLORS.green : COLORS.teal,
+                  boxShadow: ed.status === 'In Progress' ? `0 0 6px ${COLORS.green}88` : 'none',
+                  flexShrink: 0,
+                }} />
                 <span>
                   <strong style={{ color: COLORS.text }}>{ed.degree}</strong>
                   <span style={{ color: COLORS.overlay1 }}> · {ed.period}</span>
+                  {ed.status === 'In Progress' && (
+                    <span style={{
+                      marginLeft: 8,
+                      fontSize: '0.68rem',
+                      padding: '1px 7px',
+                      borderRadius: 99,
+                      background: `${COLORS.green}18`,
+                      color: COLORS.green,
+                      border: `1px solid ${COLORS.green}33`,
+                      fontWeight: 600,
+                    }}>
+                      In Progress
+                    </span>
+                  )}
                 </span>
               </div>
             ))}
