@@ -100,6 +100,30 @@ export function GlobalStyle(): React.ReactElement {
         animation: grow 1s cubic-bezier(0.25,1,0.5,1) both;
       }
 
+      @keyframes underlineContact {
+        0% { transform: scaleX(0); transform-origin: left; }
+        45% { transform: scaleX(1); transform-origin: left; }
+        50% { transform: scaleX(1); transform-origin: right; }
+        95% { transform: scaleX(0); transform-origin: right; }
+        100% { transform: scaleX(0); transform-origin: right; }
+      }
+      
+      .contact-anim {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .contact-anim::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: ${COLORS.mauve};
+        animation: underlineContact 3s infinite ease-in-out;
+      }
+
       .tag-hover:hover {
         border-color: ${COLORS.mauve} !important;
         color: ${COLORS.text} !important;
@@ -116,11 +140,25 @@ export function GlobalStyle(): React.ReactElement {
         border-color: rgba(255,255,255,0.14) !important;
       }
 
-      .lnk-hover:hover {
-        transform: translateX(-4px);
-        border-color: ${COLORS.mauve} !important;
-        background: ${COLORS.surface1} !important;
-        color: ${COLORS.text} !important;
+      .lnk-hover {
+        position: relative;
+        display: inline-block;
+      }
+      .lnk-hover::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: currentColor;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+      }
+      .lnk-hover:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
       }
 
       .ws-btn:hover {

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { User, ChevronLeft, MapPin, Mail, GitBranch, Link2 } from 'lucide-react';
+import { User } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
 import personal from '@/data/personal.json';
@@ -9,20 +9,60 @@ import skills from '@/data/skills.json';
 import education from '@/data/education.json';
 import experience from '@/data/experience.json';
 
-// Top technologies shown as tags (first 8)
-const TOP_SKILLS = skills.topTechnologies.slice(0, 8).map((label, i) => ({
-  label,
-  accent: i < 3,
-}));
-
-
+// Key skills for tags display
+const KEY_SKILLS = [
+  { label: 'React / Next.js', accent: true },
+  { label: 'Node.js / NestJS', accent: true },
+  { label: 'Python / FastAPI', accent: true },
+  { label: 'Docker', accent: false },
+  { label: 'PostgreSQL', accent: false },
+  { label: 'LangChain / AI', accent: false },
+  { label: 'Kotlin', accent: false },
+  { label: 'TypeScript', accent: false },
+];
 
 const STATS = [
   { n: `${experience.length}+`, l: 'Experiences' },
   { n: `${education.length}`, l: 'Degrees' },
   { n: `${skills.topTechnologies.length}+`, l: 'Technologies' },
-  { n: '4', l: 'Workshops Led' },
+  { n: '20+', l: 'Team Members Led' },
 ];
+
+// Helper component for neofetch info row
+function NeoRow({ label, color, children }: { label: string; color: string; children: React.ReactNode }) {
+  return (
+    <>
+      <span style={{ color, fontWeight: 700, whiteSpace: 'nowrap' }}>{label}</span>
+      <span>{children}</span>
+    </>
+  );
+}
+
+// Section separator inside neofetch
+function NeoSectionLabel({ text, color }: { text: string; color: string }) {
+  return (
+    <>
+      <span
+        style={{
+          color,
+          fontWeight: 700,
+          fontSize: '0.72rem',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          gridColumn: '1 / -1',
+          marginTop: 8,
+          marginBottom: 2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+        }}
+      >
+        <span style={{ flex: '0 0 auto' }}>{text}</span>
+        <span style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${color}44, transparent)` }} />
+      </span>
+    </>
+  );
+}
 
 export function Workspace1(): React.ReactElement {
   return (
@@ -58,7 +98,7 @@ export function Workspace1(): React.ReactElement {
             }}
           >
             <div style={{ color: COLORS.text, marginBottom: 16 }}>
-              <span style={{ color: COLORS.green }}>{personal.name.split(' ')[0].toLowerCase()}@arch</span>
+              <span style={{ color: COLORS.green }}>{personal.name.split(' ')[0].toLowerCase()}@portfolio</span>
               <span style={{ color: COLORS.overlay0 }}>:~$&nbsp;</span>
               neofetch
             </div>
@@ -88,59 +128,102 @@ export function Workspace1(): React.ReactElement {
                   <span style={{ color: COLORS.text }}>@</span>
                   <span style={{ color: COLORS.blue, fontWeight: 700 }}>portfolio</span>
                 </div>
-                <div style={{ color: COLORS.overlay1, marginBottom: 12 }}>-------------------</div>
+                <div style={{ color: COLORS.overlay1, marginBottom: 10 }}>─────────────────────</div>
 
-                <div className="neo-data-grid" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 16px' }}>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>OS</span> <span>Arch Linux x86_64</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Host</span> <span>{personal.name} Web Portfolio</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Uptime</span> <span>3+ Years (Developer Uptime)</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Packages</span> <span>{skills.topTechnologies.length}+ (tech stack)</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Shell</span> <span>zsh / bash</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>WM</span> <span>Hyprland (Wayland)</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Terminal</span> <span>kitty</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Editor</span> <span>Neovim</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Role</span> <span>{personal.title}</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Education</span> <span>{education[0]?.degree || "Master's in Data Science"}</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Location</span> <span>{personal.location}</span>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Contact</span>
+                <div className="neo-data-grid" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '4px 14px', fontSize: '0.95rem' }}>
+
+                  {/* ═══ WHO AM I — HR Section ═══ */}
+                  <NeoSectionLabel text="▍ Profile" color={COLORS.green} />
+                  <NeoRow label="Identity" color={COLORS.green}>{personal.name}</NeoRow>
+                  <NeoRow label="Title" color={COLORS.green}>{personal.title}</NeoRow>
+                  <NeoRow label="Location" color={COLORS.green}>{personal.location} 🇹🇳</NeoRow>
+                  <NeoRow label="Status" color={COLORS.green}>
+                    <span style={{ color: COLORS.teal }}>●</span> Open to opportunities
+                  </NeoRow>
+
+                  <NeoSectionLabel text="▍ Experience" color={COLORS.yellow} />
+                  <NeoRow label="Uptime" color={COLORS.yellow}>3+ years in dev · {experience.length} roles</NeoRow>
+                  <NeoRow label="Leadership" color={COLORS.yellow}>Technical Projects Manager · 20+ members</NeoRow>
+                  <NeoRow label="Workshops" color={COLORS.yellow}>4 technical workshops delivered</NeoRow>
+                  <NeoRow label="PFE" color={COLORS.yellow}>Full-Stack Lead @ Goodwill — Plan AI · Rated Very Good</NeoRow>
+
+                  <NeoSectionLabel text="▍ Education" color={COLORS.teal} />
+                  <NeoRow label="Master's" color={COLORS.teal}>{education[0]?.degree} — {education[0]?.status}</NeoRow>
+                  <NeoRow label="Bachelor's" color={COLORS.teal}>{education[1]?.degree}</NeoRow>
+
+                  <NeoSectionLabel text="▍ Soft Skills" color={COLORS.pink} />
+                  <NeoRow label="Strength" color={COLORS.pink}>Team leadership · Clear documentation · Self-learner</NeoRow>
+
+                  <NeoRow label="" color={COLORS.pink}>
+                    <span style={{ color: COLORS.overlay1 }}>Cross-team communication · Agile/Scrum mindset</span>
+                  </NeoRow>
+
+                  <NeoSectionLabel text="▍ Contact" color={COLORS.blue} />
+                  <span className="contact-anim" style={{ color: COLORS.blue, fontWeight: 700 }}>Reach</span>
                   <span style={{ display: 'flex', gap: 12 }}>
                     <a href={`mailto:${personal.email}`} className="lnk-hover" style={{ color: COLORS.teal, textDecoration: 'none' }}>Email</a>
                     <a href={personal.github} target="_blank" rel="noreferrer" className="lnk-hover" style={{ color: COLORS.lavender, textDecoration: 'none' }}>GitHub</a>
                     <a href={personal.linkedin} target="_blank" rel="noreferrer" className="lnk-hover" style={{ color: COLORS.blue, textDecoration: 'none' }}>LinkedIn</a>
                   </span>
-                </div>
 
-                <div style={{ marginTop: 22 }}>
-                  <span style={{ color: COLORS.mauve, fontWeight: 700, display: 'block', marginBottom: 8 }}>Skills:</span>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {TOP_SKILLS.map((sk) => (
-                      <span
-                        key={sk.label}
-                        className="tag-hover"
-                        style={{
-                          padding: '3px 10px',
-                          borderRadius: 99,
-                          fontSize: '0.78rem',
-                          background: sk.accent ? 'rgba(203,166,247,.12)' : COLORS.surface0,
-                          color: sk.accent ? COLORS.mauve : COLORS.subtext1,
-                          border: `1px solid ${sk.accent ? 'rgba(203,166,247,.28)' : 'rgba(255,255,255,.06)'}`,
-                          cursor: 'default',
-                        }}
-                      >
-                        {sk.label}
-                      </span>
-                    ))}
-                  </div>
+                  {/* ═══ TECHNICAL — Expert Section ═══ */}
+                  <NeoSectionLabel text="▍ Tech Stack" color={COLORS.mauve} />
+                  <NeoRow label="Frontend" color={COLORS.mauve}>React · Next.js · TypeScript · Tailwind</NeoRow>
+                  <NeoRow label="Backend" color={COLORS.mauve}>Node.js · NestJS · FastAPI · Express</NeoRow>
+                  <NeoRow label="Data" color={COLORS.mauve}>PostgreSQL · MongoDB · Redis · Prisma</NeoRow>
+                  <NeoRow label="AI / ML" color={COLORS.mauve}>LangChain · Scikit-learn · TensorFlow · RAG</NeoRow>
+                  <NeoRow label="Mobile" color={COLORS.mauve}>Kotlin · Jetpack Compose · MVVM</NeoRow>
+                  <NeoRow label="DevOps" color={COLORS.mauve}>Docker · GitHub Actions · Nginx · Vercel</NeoRow>
+
+                  <NeoSectionLabel text="▍ Environment" color={COLORS.peach} />
+                  <NeoRow label="OS" color={COLORS.peach}>Arch Linux x86_64</NeoRow>
+                  <NeoRow label="WM" color={COLORS.peach}>Hyprland (Wayland)</NeoRow>
+                  <NeoRow label="Shell" color={COLORS.peach}>zsh · bash</NeoRow>
+                  <NeoRow label="Terminal" color={COLORS.peach}>kitty</NeoRow>
+                  <NeoRow label="Editor" color={COLORS.peach}>Neovim</NeoRow>
+                  <NeoRow label="Methods" color={COLORS.peach}>Agile · TDD · Clean Code · SOLID</NeoRow>
                 </div>
 
                 {/* Neofetch Color Blocks */}
-                <div style={{ display: 'flex', marginTop: 'auto', paddingTop: 20, gap: 5 }}>
-                  {[COLORS.red, COLORS.green, COLORS.yellow, COLORS.blue, COLORS.mauve, COLORS.teal, COLORS.peach].map(c => (
+                <div style={{ display: 'flex', marginTop: 'auto', paddingTop: 14, gap: 5 }}>
+                  {[COLORS.red, COLORS.green, COLORS.yellow, COLORS.blue, COLORS.mauve, COLORS.teal, COLORS.peach, COLORS.pink].map(c => (
                     <div key={c} style={{ width: 20, height: 20, background: c, borderRadius: 3 }}></div>
                   ))}
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </Win>
+
+      {/* About */}
+      <Win title="about.md" delay={0.11}>
+        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <div>
+            <User size={28} color={COLORS.mauve} style={{ marginBottom: 12 }} />
+            <p style={{ fontSize: '1rem', color: COLORS.subtext0, lineHeight: 1.75, marginBottom: 10 }}>
+              {personal.bio}
+            </p>
+            {/* Education highlight */}
+            {education.slice(0, 2).map((ed) => (
+              <div
+                key={ed.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 6,
+                  marginBottom: 5,
+                  fontSize: '0.95rem',
+                  color: COLORS.subtext0,
+                }}
+              >
+                <span style={{ color: COLORS.teal, marginTop: 1 }}>▸</span>
+                <span>
+                  <strong style={{ color: COLORS.text }}>{ed.degree}</strong>
+                  <span style={{ color: COLORS.overlay1 }}> · {ed.period}</span>
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </Win>
@@ -179,38 +262,6 @@ export function Workspace1(): React.ReactElement {
       </Win>
 
 
-
-      {/* About */}
-      <Win title="about.md" delay={0.11}>
-        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          <div>
-            <User size={28} color={COLORS.mauve} style={{ marginBottom: 12 }} />
-            <p style={{ fontSize: '1rem', color: COLORS.subtext0, lineHeight: 1.75, marginBottom: 10 }}>
-              {personal.bio}
-            </p>
-            {/* Education highlight */}
-            {education.slice(0, 2).map((ed) => (
-              <div
-                key={ed.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 6,
-                  marginBottom: 5,
-                  fontSize: '0.95rem',
-                  color: COLORS.subtext0,
-                }}
-              >
-                <span style={{ color: COLORS.teal, marginTop: 1 }}>▸</span>
-                <span>
-                  <strong style={{ color: COLORS.text }}>{ed.degree}</strong>
-                  <span style={{ color: COLORS.overlay1 }}> · {ed.period}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Win>
     </div>
   );
 }
