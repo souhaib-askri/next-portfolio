@@ -1,0 +1,27 @@
+[
+  {
+    "id": "master",
+    "degree": "Master's — Data Science",
+    "institution": "Institut Supérieur des Langues Appliquées et d'Informatique de Béja (ISLAIB)",
+    "field": "Data Science",
+    "period": "2025 — 2027",
+    "status": "In Progress",
+    "location": "Béja, Tunisia",
+    "courses": [
+      "Advanced Machine Learning",
+      "Natural Language Processing (NLP)",
+      "Big Data Analytics",
+      "Advanced Databases"
+    ]
+  },
+  {
+    "id": "bachelor",
+    "degree": "Bachelor's — Computer Science & Application Engineering",
+    "institution": "Institut Supérieur des Langues Appliquées et d'Informatique de Béja (ISLAIB)",
+    "field": "Application Engineering",
+    "period": "2022 — 2025",
+    "status": "Completed",
+    "grade": "Accepted",
+    "location": "Béja, Tunisia"
+  }
+]

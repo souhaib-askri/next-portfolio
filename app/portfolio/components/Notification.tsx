@@ -3,6 +3,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { COLORS } from '../constants';
+import personal from '@/data/personal.json';
 
 interface NotificationProps {
   show: boolean;
@@ -33,10 +34,10 @@ export function Notification({ show, onClose }: NotificationProps): React.ReactE
         WebkitBackdropFilter: 'blur(20px)',
       }}
     >
-      <span style={{ fontSize: 19 }}>🐧</span>
+      <span style={{ fontSize: 22 }}>🐧</span>
       <div>
-        <div style={{ fontWeight: 600, color: COLORS.text }}>Welcome to the Portfolio!</div>
-        <div style={{ color: COLORS.subtext0, fontSize: '0.7rem', marginTop: 1 }}>Use workspace names or ← → to navigate</div>
+        <div style={{ fontWeight: 600, color: COLORS.text, fontSize: '0.95rem' }}>Welcome to {personal.name.split(' ')[0]}'s Portfolio!</div>
+        <div style={{ color: COLORS.subtext0, fontSize: '0.82rem', marginTop: 1 }}>Use workspace names or ← → to navigate</div>
       </div>
       <button
         onClick={onClose}
@@ -53,7 +54,7 @@ export function Notification({ show, onClose }: NotificationProps): React.ReactE
           alignItems: 'center',
         }}
       >
-        <X size={11} />
+        <X size={15} />
       </button>
     </div>
   );

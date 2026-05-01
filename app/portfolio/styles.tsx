@@ -24,7 +24,7 @@ export function GlobalStyle(): React.ReactElement {
         font-family: 'IBM Plex Sans Arabic', sans-serif;
         background: ${COLORS.crust};
         color: ${COLORS.text};
-        direction: rtl;
+        direction: ltr;
       }
       
       ::-webkit-scrollbar {
@@ -133,6 +133,60 @@ export function GlobalStyle(): React.ReactElement {
 
       .tl-item-hover:hover .tl-badge {
         opacity: 1;
+      }
+
+      /* Responsive Mobile Layout */
+      @media (max-width: 900px) {
+        .ws-grid {
+          display: flex !important;
+          flex-direction: column !important;
+          height: auto !important;
+          min-height: 100%;
+        }
+        
+        .neo-flex {
+          flex-direction: column !important;
+          align-items: center !important;
+          gap: 16px !important;
+          text-align: center;
+        }
+
+        .neo-img {
+          width: 140px !important;
+          height: 140px !important;
+          border-radius: 50% !important; /* Circular on mobile looks nice */
+        }
+
+        .neo-data-grid {
+          grid-template-columns: 1fr !important;
+          text-align: left;
+          gap: 2px 10px !important;
+          line-height: 1.4 !important;
+          font-size: 0.82rem !important;
+        }
+        
+        .tech-grid {
+          grid-template-columns: repeat(4, 1fr) !important;
+        }
+        
+        .sys-stats-grid {
+          grid-template-columns: 1fr !important;
+        }
+
+        .hide-mobile {
+          display: none !important;
+        }
+
+        .ws-btn-text {
+          display: none !important;
+        }
+
+        .mobile-scroll {
+          overflow-y: auto !important;
+          overflow-x: hidden !important;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 80px; /* give some breathing room at bottom */
+        }
       }
     `}</style>
   );

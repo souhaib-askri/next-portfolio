@@ -18,9 +18,9 @@ export function useClock(): ClockState {
       const m = n.getMinutes().toString().padStart(2, '0');
       setTime(`${h}:${m}`);
 
-      const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-      const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-      setDate(`${days[n.getDay()]} ${n.getDate()} ${months[n.getMonth()]}`);
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      setDate(`${days[n.getDay()]}, ${n.getDate()} ${months[n.getMonth()]}`);
     };
 
     tick();

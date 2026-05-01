@@ -16,12 +16,12 @@ export function Viewport({ current, workspaces }: ViewportProps): React.ReactEle
           display: 'flex',
           width: '400%',
           height: '100%',
-          transform: `translateX(${current * 25}%)`,
+          transform: `translateX(-${current * 25}%)`,
           transition: 'transform .48s cubic-bezier(.77,0,.18,1)',
         }}
       >
         {workspaces.map(({ id, component: WC }) => (
-          <div key={id} style={{ width: '25%', height: '100%', flexShrink: 0 }}>
+          <div key={id} className="mobile-scroll" style={{ width: '25%', height: '100%', flexShrink: 0 }}>
             <WC />
           </div>
         ))}

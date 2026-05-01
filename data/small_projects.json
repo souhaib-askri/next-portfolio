@@ -1,0 +1,26 @@
+[
+  {
+    "id": "small-1",
+    "title": "ESP32 Firebase Sync",
+    "description": "A micro-project connecting an ESP32 microcontroller to Firebase Realtime Database for remote state management.",
+    "date": "2026",
+    "technologies": ["C++", "Firebase", "ESP32", "HTML/JS"],
+    "github": "https://github.com/souhaib-askri/esp32-firebase"
+  },
+  {
+    "id": "small-2",
+    "title": "CLI Habit Tracker",
+    "description": "A terminal-based habit tracker written in Python to help log daily tasks and generate weekly ASCII reports.",
+    "date": "2025",
+    "technologies": ["Python", "Click", "SQLite"],
+    "github": "https://github.com/souhaib-askri/cli-habits"
+  },
+  {
+    "id": "small-3",
+    "title": "Portfolio v1",
+    "description": "My first iteration of a personal portfolio built using plain HTML, CSS, and vanilla JavaScript.",
+    "date": "2024",
+    "technologies": ["HTML", "CSS", "JavaScript"],
+    "github": "https://github.com/souhaib-askri/portfolio-v1"
+  }
+]

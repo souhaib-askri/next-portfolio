@@ -56,8 +56,8 @@ export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: T
               gap: 5,
             }}
           >
-            <Icon size={12} />
-            {label}
+            <Icon size={16} />
+            <span className="ws-btn-text">{label}</span>
           </button>
         ))}
       </div>
@@ -92,10 +92,10 @@ export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: T
 
       {/* RIGHT: system icons */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: COLORS.subtext0 }}>
-        <Volume2 size={13} />
-        <Wifi size={13} />
-        <Battery size={13} />
-        <span style={{ fontSize: 12, color: COLORS.subtext0 }}>{date}</span>
+        <Volume2 size={18} />
+        <Wifi size={18} />
+        <Battery size={18} />
+        <span className="hide-mobile" style={{ fontSize: 12, color: COLORS.subtext0 }}>{date}</span>
       </div>
     </div>
   );

@@ -12,9 +12,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import personal from "@/data/personal.json";
+
 export const metadata: Metadata = {
-  title: "أحمد الراشد - Full-Stack Developer",
-  description: "Portfolio of Ahmed Al-Rashid - Full-Stack Developer & Linux Enthusiast",
+  title: `${personal.name} - ${personal.title}`,
+  description: personal.bio,
 };
 
 export default function RootLayout({
@@ -24,7 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ar"
+      lang="en"
+      dir="ltr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="h-full w-full flex flex-col m-0 p-0">{children}</body>

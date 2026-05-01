@@ -1,0 +1,91 @@
+[
+  {
+    "id": "plan-ai",
+    "title": "Plan AI",
+    "subtitle": "Intelligent UML Diagram Generation Platform",
+    "type": ["Graduation Project", "Personal Project"],
+    "status": "In Development",
+    "duration": "6 months",
+    "rating": "Very Good",
+    "github": "https://github.com/IssamMekni/plan_ai",
+    "description": "A full-stack web platform designed to simplify and accelerate the creation of software engineering diagrams (UML). It leverages AI and NLP to understand user requirements written in natural language and dynamically convert them into PlantUML code, then into precise and professional diagrams.",
+    "features": [
+      "Text-to-Diagram generation",
+      "Intelligent Conversational UI",
+      "Collaboration features with Version Control",
+      "Scalable Microservices architecture",
+      "Standalone Admin panel with AdminJS"
+    ],
+    "technologies": {
+      "ai": ["Gemini API (Google)", "Ollama (Local LLMs)"],
+      "frontend": ["Next.js", "React.js", "Tailwind CSS", "TypeScript"],
+      "admin": ["AdminJS"],
+      "backend": ["Next.js API Routes", "Prisma ORM", "PostgreSQL", "MinIO API"],
+      "infrastructure": ["Docker", "Docker Compose"],
+      "diagramEngine": ["PlantUML Server API"],
+      "methodology": ["Agile / Scrum"]
+    },
+    "flow": "Natural Text → AI Model API → PlantUML Code → PlantUML Server API → Ready Diagram",
+    "supportedDiagrams": ["Class Diagram", "Sequence Diagram", "Use Case Diagram"],
+    "featured": true
+  },
+  {
+    "id": "bluff-arena",
+    "title": "Bluff Arena 🃏",
+    "subtitle": "Interactive Multiplayer Card Game",
+    "type": ["Personal Project"],
+    "status": "Completed",
+    "github": "https://github.com/souhaib-askri/bluff-arena",
+    "description": "A strategic online multiplayer card game (inspired by \"Cheat\"), where players compete to get rid of their cards using deception and quick thinking.",
+    "highlights": [
+      "Pure TypeScript game engine with zero dependencies",
+      "Real-time communication and ultra-fast sync with WebSockets and 5-second challenge window",
+      "Server-side validation only for security",
+      "Advanced connection management with Graceful Reconnection (30-second window)",
+      "Flexible game modes: JWT + guest play + 3 challenge modes"
+    ],
+    "technologies": {
+      "frontend": ["Next.js 15 (App Router)", "Tailwind CSS", "Zustand"],
+      "backend": ["NestJS", "Socket.io"],
+      "gameEngine": ["Pure TypeScript"],
+      "architecture": ["Monorepo (npm Workspaces)"]
+    },
+    "featured": true
+  },
+  {
+    "id": "productivity-launcher",
+    "title": "Productivity Launcher",
+    "subtitle": "Android Productivity Launcher App",
+    "type": ["Personal Project", "Startup"],
+    "status": "In Development — MVP (Q2 2026)",
+    "duration": "3+ months",
+    "description": "An alternative Android Launcher that transforms the smartphone from a distraction tool into a focused productivity environment. It redesigns the home screen experience with a triple app classification system and unique graduated protection mechanisms (Friction System).",
+    "features": [
+      "Triple classification system: Home page / Search / Locked apps",
+      "Graduated lock system (4 levels): Confirm → Wait 15s → Write reason → Challenges",
+      "Profile system: Preset templates (Student, Employee, Freelancer, Focus, Break)",
+      "Productivity widget: Pomodoro, daily tasks, habit tracker",
+      "100% local usage analytics"
+    ],
+    "technologies": {
+      "core": ["Kotlin 100%", "Jetpack Compose", "Clean Architecture + MVVM", "Hilt"],
+      "database": ["Room Database", "DataStore", "Encrypted Storage"],
+      "android": ["WorkManager", "AlarmManager", "UsageStatsManager", "Custom Launcher API"],
+      "ui": ["Material Design 3", "RTL Support", "Dark/Light Theme"],
+      "testing": ["JUnit", "Mockito", "Espresso", "Turbine", "Detekt"]
+    },
+    "achievements": [
+      "Strict Clean Architecture — easy feature addition",
+      "Optimized performance: LRU Cache (↓40% memory) + Lazy loading (↑60% startup time)",
+      "Local-first: no cloud dependency, no external tracking",
+      "Full RTL Arabic support"
+    ],
+    "roadmap": [
+      { "phase": "Technical Architecture Design", "period": "Q2 2026", "status": "completed" },
+      { "phase": "Documentation Creation", "period": "Q2 2026", "status": "completed" },
+      { "phase": "MVP Development", "period": "Q2 2026", "status": "in-progress" },
+      { "phase": "Beta on Play Store", "period": "Q3 2026", "status": "planned" }
+    ],
+    "featured": true
+  }
+]

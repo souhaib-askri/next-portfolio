@@ -15,8 +15,8 @@ export function SectionHeader({ icon: Icon, label, color = COLORS.lavender }: Se
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
       <div
         style={{
-          width: 28,
-          height: 28,
+          width: 34,
+          height: 34,
           borderRadius: 7,
           background: 'rgba(180,190,254,0.1)',
           display: 'flex',
@@ -25,9 +25,9 @@ export function SectionHeader({ icon: Icon, label, color = COLORS.lavender }: Se
           flexShrink: 0,
         }}
       >
-        <Icon size={13} color={color} />
+        <Icon size={18} color={color} />
       </div>
-      <span style={{ fontSize: '.93rem', fontWeight: 600, color: COLORS.text, letterSpacing: '.2px' }}>{label}</span>
+      <span style={{ fontSize: '1.08rem', fontWeight: 600, color: COLORS.text, letterSpacing: '.2px' }}>{label}</span>
       <div style={{ flex: 1, height: 1, background: `linear-gradient(to left, transparent, ${COLORS.surface1})` }} />
     </div>
   );

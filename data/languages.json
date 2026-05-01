@@ -1,0 +1,38 @@
+[
+  {
+    "language": "Arabic",
+    "level": "Native (C2)",
+    "cefr": "C2",
+    "skills": {
+      "listening": true,
+      "speaking": true,
+      "reading": true,
+      "writing": true
+    },
+    "notes": "Native language"
+  },
+  {
+    "language": "French",
+    "level": "B1",
+    "cefr": "B1",
+    "skills": {
+      "listening": "intermediate",
+      "speaking": "intermediate",
+      "reading": "intermediate",
+      "writing": "intermediate"
+    },
+    "notes": "Academic and professional environment in Tunisia"
+  },
+  {
+    "language": "English",
+    "level": "B1",
+    "cefr": "B1",
+    "skills": {
+      "listening": "intermediate",
+      "speaking": "intermediate",
+      "reading": true,
+      "writing": true
+    },
+    "notes": "Reading and writing are stronger — relied on daily for Documentation and GitHub"
+  }
+]

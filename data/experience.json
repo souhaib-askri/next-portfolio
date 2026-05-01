@@ -1,0 +1,51 @@
+[
+  {
+    "id": "technoblade-club",
+    "title": "Technical Projects Manager",
+    "organization": "Technoblade University Club — ISLAIB",
+    "type": "Leadership / Volunteer",
+    "period": "September 2025 — June 2026",
+    "highlights": [
+      "Led and coordinated technical projects within the university club",
+      "Managed a team of 20+ members",
+      "Organized and personally delivered 4 technical workshops with wide student participation",
+      "Led a complete technical project within the club framework"
+    ],
+    "tags": ["Team Leadership", "Project Management", "Technical Workshops", "Agile"]
+  },
+  {
+    "id": "plan-ai-internship",
+    "title": "PFE Internship — Plan AI",
+    "organization": "Goodwill",
+    "organizationUrl": "https://goodwill.tn/",
+    "type": "Full-Stack Developer (Lead)",
+    "duration": "6 months",
+    "highlights": [
+      "Developed a full-stack web platform (Plan AI) for generating UML diagrams from natural language using AI",
+      "Integrated Gemini API (with Ollama support) into the software engineering workflow",
+      "Project rated: Very Good"
+    ],
+    "technologies": ["Next.js", "TypeScript", "Prisma ORM", "PostgreSQL", "MinIO", "PlantUML Server", "AdminJS", "Docker Compose"]
+  },
+  {
+    "id": "tunisie-telecom",
+    "title": "Summer Internship",
+    "organization": "Tunisie Telecom",
+    "type": "Frontend Developer",
+    "period": "February 2025 — June 2025",
+    "highlights": [
+      "Developed a visual Dashboard / UI according to specified requirements"
+    ],
+    "technologies": []
+  },
+  {
+    "id": "hardware-repair",
+    "title": "Summer Internship",
+    "organization": "Computer Repair Workshop",
+    "type": "Hardware Technician",
+    "highlights": [
+      "Computer hardware maintenance and repair"
+    ],
+    "technologies": []
+  }
+]

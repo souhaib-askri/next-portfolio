@@ -1,0 +1,27 @@
+{
+  "current": [],
+  "courses": [
+    {
+      "name": "Fundamentals Learning",
+      "source": "YouTube",
+      "period": "2022-2024",
+      "topic": "Programming Fundamentals"
+    },
+    {
+      "name": "Advanced Learning",
+      "source": "Next.js / Prisma / Docker Docs",
+      "period": "2024-2025",
+      "topic": "Full-Stack Development"
+    },
+    {
+      "name": "Gemini API Integration",
+      "source": "Google AI Documentation",
+      "period": "2025",
+      "topic": "AI Integration"
+    }
+  ],
+  "planned": [
+    "AWS Solutions Architect Associate",
+    "TensorFlow Developer Certificate"
+  ]
+}

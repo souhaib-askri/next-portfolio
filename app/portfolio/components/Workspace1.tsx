@@ -1,143 +1,145 @@
 'use client';
 
 import React from 'react';
-import { User, ChevronLeft, Code2, Terminal, Briefcase } from 'lucide-react';
-import { COLORS, Skill } from '../constants';
+import { User, ChevronLeft, MapPin, Mail, GitBranch, Link2 } from 'lucide-react';
+import { COLORS } from '../constants';
 import { Win } from './Win';
-import { SectionHeader } from './SectionHeader';
+import personal from '@/data/personal.json';
+import skills from '@/data/skills.json';
+import education from '@/data/education.json';
+import experience from '@/data/experience.json';
 
-const SKILLS: Skill[] = [
-  { label: 'Linux', accent: true },
-  { label: 'Open Source', accent: true },
-  { label: 'TypeScript' },
-  { label: 'Rust' },
-  { label: 'Python' },
-  { label: 'GTK4' },
-];
+// Top technologies shown as tags (first 8)
+const TOP_SKILLS = skills.topTechnologies.slice(0, 8).map((label, i) => ({
+  label,
+  accent: i < 3,
+}));
 
-interface TerminalLine {
-  p: boolean;
-  t: string | React.ReactNode;
-}
 
-const TERMINAL_LINES: TerminalLine[] = [
-  { p: true, t: 'whoami' },
-  {
-    p: false,
-    t: (
-      <span>
-        <span style={{ color: COLORS.mauve }}>Ahmed Al-Rashid</span> — Full-Stack Dev
-      </span>
-    ),
-  },
-  { p: true, t: 'cat skills.txt' },
-  {
-    p: false,
-    t: (
-      <span>
-        <span style={{ color: COLORS.blue }}>Rust</span> · <span style={{ color: COLORS.green }}>Python</span> ·{' '}
-        <span style={{ color: COLORS.teal }}>TypeScript</span> · GTK4
-      </span>
-    ),
-  },
-  { p: true, t: 'neofetch --mini' },
-  {
-    p: false,
-    t: (
-      <span>
-        Arch Linux · GNOME <span style={{ color: COLORS.mauve }}>46</span> · Wayland
-      </span>
-    ),
-  },
-  { p: true, t: <span className="blink" style={{ display: 'inline-block', width: 7, height: 13, background: COLORS.text, verticalAlign: 'middle' }} /> },
+
+const STATS = [
+  { n: `${experience.length}+`, l: 'Experiences' },
+  { n: `${education.length}`, l: 'Degrees' },
+  { n: `${skills.topTechnologies.length}+`, l: 'Technologies' },
+  { n: '4', l: 'Workshops Led' },
 ];
 
 export function Workspace1(): React.ReactElement {
   return (
     <div
+      className="ws-grid"
       style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: '7fr 4fr',
         gridTemplateRows: '1fr 1fr',
-        gap: 14,
-        padding: 18,
+        gap: 9,
+        padding: 11,
         height: '100%',
         background: `radial-gradient(ellipse 70% 50% at 15% 20%,rgba(203,166,247,.07) 0%,transparent 60%),
                     radial-gradient(ellipse 50% 40% at 85% 80%,rgba(137,180,250,.05) 0%,transparent 60%),
                     ${COLORS.base}`,
       }}
     >
-      {/* Hero */}
-      <Win title="~/ home" delay={0}>
-        <div style={{ display: 'flex', gap: 18, alignItems: 'center', height: '100%' }}>
-          {/* Avatar */}
+      {/* Combined Terminal / Home */}
+      <Win title={`Terminal — neofetch`} delay={0} style={{ gridRow: '1 / 3' }}>
+        <div style={{ padding: 0, margin: -20, height: 'calc(100% + 40px)' }}>
           <div
             style={{
-              width: 84,
-              height: 84,
-              borderRadius: '50%',
-              flexShrink: 0,
-              padding: 3,
-              background: `linear-gradient(135deg,${COLORS.mauve},${COLORS.blue},${COLORS.teal})`,
-              boxShadow: `0 0 24px rgba(180,190,254,.22)`,
+              background: COLORS.crust,
+              borderRadius: '0 0 12px 12px',
+              padding: '24px 20px',
+              fontFamily: "'JetBrains Mono',monospace",
+              fontSize: '1.05rem',
+              lineHeight: 1.75,
+              height: '100%',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                background: COLORS.surface0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 34,
-              }}
-            >
-              👨‍💻
+            <div style={{ color: COLORS.text, marginBottom: 16 }}>
+              <span style={{ color: COLORS.green }}>{personal.name.split(' ')[0].toLowerCase()}@arch</span>
+              <span style={{ color: COLORS.overlay0 }}>:~$&nbsp;</span>
+              neofetch
             </div>
-          </div>
-          <div>
-            <div style={{ fontSize: '1.55rem', fontWeight: 700, letterSpacing: '-0.4px' }}>
-              Ahmed <span style={{ color: COLORS.mauve }}>Al-Rashid</span>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                marginTop: 5,
-                fontFamily: "'JetBrains Mono',monospace",
-                fontSize: '0.75rem',
-                color: COLORS.blue,
-              }}
-            >
-              <ChevronLeft size={14} color={COLORS.green} />
-              Full-Stack Developer & Linux Enthusiast
-            </div>
-            <p style={{ fontSize: '0.81rem', color: COLORS.subtext0, lineHeight: 1.7, marginTop: 9 }}>
-              Passionate developer building elegant digital experiences. I love GNOME and open-source, believing great software combines beauty with function.
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 11 }}>
-              {SKILLS.map((sk) => (
-                <span
-                  key={sk.label}
-                  className="tag-hover"
+
+            <div className="neo-flex" style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flex: 1 }}>
+              {/* Image / "Logo" */}
+              <div style={{ flexShrink: 0 }}>
+                <img
+                  src="/souhaieb.png"
+                  alt="Souhaieb"
+                  className="neo-img"
                   style={{
-                    padding: '3px 9px',
-                    borderRadius: 99,
-                    fontSize: '0.69rem',
-                    fontWeight: 500,
-                    background: sk.accent ? 'rgba(203,166,247,.12)' : COLORS.surface0,
-                    color: sk.accent ? COLORS.mauve : COLORS.subtext1,
-                    border: `1px solid ${sk.accent ? 'rgba(203,166,247,.28)' : 'rgba(255,255,255,.06)'}`,
-                    cursor: 'default',
-                    transition: 'all .18s',
+                    width: 420,
+                    height: 420,
+                    objectFit: 'cover',
+                    borderRadius: 14,
+                    border: `2px solid ${COLORS.mauve}`,
+                    boxShadow: `0 0 32px rgba(203,166,247,.18)`,
                   }}
-                >
-                  {sk.label}
-                </span>
-              ))}
+                />
+              </div>
+
+              {/* Info */}
+              <div style={{ color: COLORS.subtext0, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>{personal.name.split(' ')[0].toLowerCase()}</span>
+                  <span style={{ color: COLORS.text }}>@</span>
+                  <span style={{ color: COLORS.blue, fontWeight: 700 }}>portfolio</span>
+                </div>
+                <div style={{ color: COLORS.overlay1, marginBottom: 12 }}>-------------------</div>
+
+                <div className="neo-data-grid" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 16px' }}>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>OS</span> <span>Arch Linux x86_64</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Host</span> <span>{personal.name} Web Portfolio</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Uptime</span> <span>3+ Years (Developer Uptime)</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Packages</span> <span>{skills.topTechnologies.length}+ (tech stack)</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Shell</span> <span>zsh / bash</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>WM</span> <span>Hyprland (Wayland)</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Terminal</span> <span>kitty</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Editor</span> <span>Neovim</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Role</span> <span>{personal.title}</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Education</span> <span>{education[0]?.degree || "Master's in Data Science"}</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Location</span> <span>{personal.location}</span>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700 }}>Contact</span>
+                  <span style={{ display: 'flex', gap: 12 }}>
+                    <a href={`mailto:${personal.email}`} className="lnk-hover" style={{ color: COLORS.teal, textDecoration: 'none' }}>Email</a>
+                    <a href={personal.github} target="_blank" rel="noreferrer" className="lnk-hover" style={{ color: COLORS.lavender, textDecoration: 'none' }}>GitHub</a>
+                    <a href={personal.linkedin} target="_blank" rel="noreferrer" className="lnk-hover" style={{ color: COLORS.blue, textDecoration: 'none' }}>LinkedIn</a>
+                  </span>
+                </div>
+
+                <div style={{ marginTop: 22 }}>
+                  <span style={{ color: COLORS.mauve, fontWeight: 700, display: 'block', marginBottom: 8 }}>Skills:</span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {TOP_SKILLS.map((sk) => (
+                      <span
+                        key={sk.label}
+                        className="tag-hover"
+                        style={{
+                          padding: '3px 10px',
+                          borderRadius: 99,
+                          fontSize: '0.78rem',
+                          background: sk.accent ? 'rgba(203,166,247,.12)' : COLORS.surface0,
+                          color: sk.accent ? COLORS.mauve : COLORS.subtext1,
+                          border: `1px solid ${sk.accent ? 'rgba(203,166,247,.28)' : 'rgba(255,255,255,.06)'}`,
+                          cursor: 'default',
+                        }}
+                      >
+                        {sk.label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Neofetch Color Blocks */}
+                <div style={{ display: 'flex', marginTop: 'auto', paddingTop: 20, gap: 5 }}>
+                  {[COLORS.red, COLORS.green, COLORS.yellow, COLORS.blue, COLORS.mauve, COLORS.teal, COLORS.peach].map(c => (
+                    <div key={c} style={{ width: 20, height: 20, background: c, borderRadius: 3 }}></div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -145,13 +147,8 @@ export function Workspace1(): React.ReactElement {
 
       {/* Stats */}
       <Win title="system-monitor" delay={0.05}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9, height: '100%', alignContent: 'center' }}>
-          {[
-            ['5+', 'Years Experience'],
-            ['32', 'Projects Completed'],
-            ['12', 'Open Source Contributions'],
-            ['4', 'GNOME Extensions'],
-          ].map(([n, l]) => (
+        <div className="sys-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9, height: '100%', alignContent: 'center' }}>
+          {STATS.map(({ n, l }) => (
             <div
               key={l}
               className="stat-card"
@@ -166,7 +163,7 @@ export function Workspace1(): React.ReactElement {
             >
               <div
                 style={{
-                  fontSize: '1.7rem',
+                  fontSize: '2rem',
                   fontWeight: 700,
                   background: `linear-gradient(135deg,${COLORS.mauve},${COLORS.blue})`,
                   WebkitBackgroundClip: 'text',
@@ -175,57 +172,42 @@ export function Workspace1(): React.ReactElement {
               >
                 {n}
               </div>
-              <div style={{ fontSize: '0.69rem', color: COLORS.subtext0, marginTop: 2 }}>{l}</div>
+              <div style={{ fontSize: '0.81rem', color: COLORS.subtext0, marginTop: 2 }}>{l}</div>
             </div>
           ))}
         </div>
       </Win>
 
-      {/* Terminal */}
-      <Win title="Terminal — bash" delay={0.08}>
-        <div style={{ padding: 0, margin: -20, height: 'calc(100% + 40px)' }}>
-          <div
-            style={{
-              background: COLORS.crust,
-              borderRadius: '0 0 12px 12px',
-              padding: 14,
-              fontFamily: "'JetBrains Mono',monospace",
-              fontSize: '0.75rem',
-              lineHeight: 1.85,
-              height: '100%',
-            }}
-          >
-            {TERMINAL_LINES.map((row, i) => (
-              <div key={i} style={{ display: 'flex', gap: 6 }}>
-                {row.p ? (
-                  <>
-                    <span style={{ color: COLORS.green }}>ahmed@arch</span>
-                    <span style={{ color: COLORS.overlay0 }}>:~$&nbsp;</span>
-                    <span style={{ color: COLORS.text }}>{row.t}</span>
-                  </>
-                ) : (
-                  <span style={{ color: COLORS.subtext0, paddingRight: 16 }}>{row.t}</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </Win>
+
 
       {/* About */}
       <Win title="about.md" delay={0.11}>
         <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
           <div>
-            <User size={18} color={COLORS.mauve} style={{ marginBottom: 12 }} />
-            <p style={{ fontSize: '0.83rem', color: COLORS.subtext0, lineHeight: 1.75, marginBottom: 10 }}>
-              Hi! I'm <strong style={{ color: COLORS.mauve }}>Ahmed</strong>, a software developer specializing in building CLI tools, web applications, and GNOME extensions.
+            <User size={28} color={COLORS.mauve} style={{ marginBottom: 12 }} />
+            <p style={{ fontSize: '1rem', color: COLORS.subtext0, lineHeight: 1.75, marginBottom: 10 }}>
+              {personal.bio}
             </p>
-            <p style={{ fontSize: '0.83rem', color: COLORS.subtext0, lineHeight: 1.75, marginBottom: 10 }}>
-              Active contributor to the <strong style={{ color: COLORS.blue }}>open-source community</strong>, passionate about Linux for over 8 years.
-            </p>
-            <p style={{ fontSize: '0.83rem', color: COLORS.subtext0, lineHeight: 1.75 }}>
-              I believe <strong style={{ color: COLORS.teal }}>user experience</strong> starts with the first line of code.
-            </p>
+            {/* Education highlight */}
+            {education.slice(0, 2).map((ed) => (
+              <div
+                key={ed.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 6,
+                  marginBottom: 5,
+                  fontSize: '0.95rem',
+                  color: COLORS.subtext0,
+                }}
+              >
+                <span style={{ color: COLORS.teal, marginTop: 1 }}>▸</span>
+                <span>
+                  <strong style={{ color: COLORS.text }}>{ed.degree}</strong>
+                  <span style={{ color: COLORS.overlay1 }}> · {ed.period}</span>
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </Win>

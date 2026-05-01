@@ -31,7 +31,7 @@ export function Win({ title, children, style, delay = 0, className = '' }: WinPr
       {/* Title bar */}
       <div
         style={{
-          height: 33,
+          height: 40,
           flexShrink: 0,
           background: COLORS.crust,
           borderBottom: `1px solid rgba(255,255,255,0.05)`,
@@ -71,7 +71,7 @@ export function Win({ title, children, style, delay = 0, className = '' }: WinPr
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
-            fontSize: 11.5,
+            fontSize: 13.5,
             color: COLORS.overlay1,
             fontWeight: 500,
             whiteSpace: 'nowrap',
@@ -81,7 +81,7 @@ export function Win({ title, children, style, delay = 0, className = '' }: WinPr
         </span>
       </div>
       {/* Body */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: 20, minHeight: 0 }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: 28, minHeight: 0 }}>
         {children}
       </div>
     </div>

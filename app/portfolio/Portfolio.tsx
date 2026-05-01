@@ -35,8 +35,8 @@ export default function Portfolio(): React.ReactElement {
   // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' && current < 3) setCurrent((c) => c + 1);
-      if (e.key === 'ArrowRight' && current > 0) setCurrent((c) => c - 1);
+      if (e.key === 'ArrowRight' && current < 3) setCurrent((c) => c + 1);
+      if (e.key === 'ArrowLeft' && current > 0) setCurrent((c) => c - 1);
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
