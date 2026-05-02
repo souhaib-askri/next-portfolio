@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { LucideIcon, Volume2, Wifi, Battery } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { LucideIcon, Volume2, Wifi, Battery, Download, Sun, Moon } from 'lucide-react';
 import { COLORS, Workspace } from '../constants';
 
 interface TopbarProps {
@@ -13,6 +13,24 @@ interface TopbarProps {
 }
 
 export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: TopbarProps): React.ReactElement {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    // Check saved theme or system preference on load
+    const savedTheme = localStorage.getItem('portfolio-theme') as 'dark' | 'light';
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('portfolio-theme', newTheme);
+  };
+
   return (
     <div
       style={{
@@ -21,7 +39,7 @@ export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: T
         left: 0,
         right: 0,
         height: 40,
-        background: 'rgba(17,17,27,0.93)',
+        background: 'var(--topbar-bg)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -63,7 +81,7 @@ export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: T
       </div>
 
       {/* CENTER: clock */}
-      <div
+      {/* <div
         style={{
           position: 'absolute',
           left: '50%',
@@ -88,14 +106,33 @@ export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: T
           }}
         />
         {time}
-      </div>
+      </div> */}
 
       {/* RIGHT: system icons */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: COLORS.subtext0 }}>
-        <Volume2 size={18} />
-        <Wifi size={18} />
-        <Battery size={18} />
-        <span className="hide-mobile" style={{ fontSize: 12, color: COLORS.subtext0 }}>{date}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: 13, color: COLORS.subtext0 }}>
+        <a 
+          href="/cv.pdf" 
+          download="Souhaieb_Askri_CV.pdf"
+          style={{ color: 'inherit', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          title="Download CV"
+          className="icon-hover"
+        >
+          <Download size={18} />
+        </a>
+        <div 
+          onClick={toggleTheme}
+          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          title="Toggle Theme"
+          className="icon-hover"
+        >
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderLeft: `1px solid ${COLORS.surface1}`, paddingLeft: 14 }}>
+          <Volume2 size={18} className="icon-hover" />
+          <Wifi size={18} className="icon-hover" />
+          <Battery size={18} className="icon-hover" />
+        </div>
+        {/* <span className="hide-mobile" style={{ fontSize: 12, color: COLORS.subtext0 }}>{date}</span> */}
       </div>
     </div>
   );
