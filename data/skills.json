@@ -1,17 +1,59 @@
 {
   "overview": [
-    { "category": "Frontend", "level": 5, "label": "Advanced" },
-    { "category": "Backend", "level": 4, "label": "Very Good" },
-    { "category": "AI / Data Science", "level": 4, "label": "Very Good" },
-    { "category": "Mobile Development", "level": 3, "label": "Good" },
-    { "category": "DevOps & Infrastructure", "level": 4, "label": "Very Good" },
-    { "category": "Methodology & Tools", "level": 5, "label": "Daily" },
-    { "category": "Entrepreneurship", "level": 3, "label": "Growing" }
+    {
+      "category": "Frontend",
+      "level": 8,
+      "label": "Advanced"
+    },
+    {
+      "category": "Backend",
+      "level": 7,
+      "label": "Very Good"
+    },
+    {
+      "category": "AI / Data Science",
+      "level": 5,
+      "label": "Very Good"
+    },
+    {
+      "category": "Mobile Development",
+      "level": 5,
+      "label": "Good"
+    },
+    {
+      "category": "DevOps & Infrastructure",
+      "level": 7,
+      "label": "Very Good"
+    },
+    {
+      "category": "Methodology & Tools",
+      "level": 8,
+      "label": "Daily"
+    },
+    {
+      "category": "Entrepreneurship",
+      "level": 5,
+      "label": "Growing"
+    }
   ],
   "topTechnologies": [
-    "React", "Next.js", "Node.js", "NestJS", "Python", "FastAPI", "PostgreSQL",
-    "Docker", "LangChain", "Git", "Kotlin", "TypeScript", "Linux",
-    "Lean Startup", "Design Thinking", "Product Thinking", "Go-to-Market"
+    "React",
+    "Next.js",
+    "Node.js",
+    "NestJS",
+    "Python",
+    "FastAPI",
+    "PostgreSQL",
+    "Docker",
+    "LangChain",
+    "Git",
+    "Kotlin",
+    "TypeScript",
+    "Linux",
+    "Lean Startup",
+    "Design Thinking",
+    "Product Thinking",
+    "Go-to-Market"
   ],
   "frontend": {
     "fundamentals": [
@@ -20,96 +62,308 @@
       "JavaScript (ES6+) — Async/Await, Promises, Modules, DOM"
     ],
     "frameworks": [
-      { "name": "React.js", "level": "Advanced", "notes": "Hooks, Context, React Query, Zustand" },
-      { "name": "Next.js", "level": "Advanced", "notes": "App Router, SSR, SSG, API Routes" },
-      { "name": "TypeScript", "level": "Advanced", "notes": "Generics, Types, Interfaces" }
+      {
+        "name": "React.js",
+        "level": "Advanced",
+        "notes": "Hooks, Context, React Query, Zustand"
+      },
+      {
+        "name": "Next.js",
+        "level": "Advanced",
+        "notes": "App Router, SSR, SSG, API Routes"
+      },
+      {
+        "name": "TypeScript",
+        "level": "Advanced",
+        "notes": "Generics, Types, Interfaces"
+      }
     ],
-    "styling": ["Tailwind CSS", "Bootstrap", "Material UI (MUI)", "Styled Components / Emotion", "Framer Motion"],
-    "buildTools": ["Vite", "Webpack", "npm", "yarn", "pnpm"],
-    "testing": ["Jest", "React Testing Library"]
+    "styling": [
+      "Tailwind CSS",
+      "Bootstrap",
+      "Material UI (MUI)",
+      "Styled Components / Emotion",
+      "Framer Motion"
+    ],
+    "buildTools": [
+      "Vite",
+      "Webpack",
+      "npm",
+      "yarn",
+      "pnpm"
+    ],
+    "testing": [
+      "Jest",
+      "React Testing Library"
+    ]
   },
   "backend": {
     "nodejs": [
-      { "name": "Express.js", "level": "Advanced", "notes": "REST APIs, Middleware, Auth" },
-      { "name": "NestJS", "level": "Intermediate", "notes": "Modules, Guards, Decorators" },
-      { "name": "Fastify", "level": "Beginner-Intermediate", "notes": "Faster than Express" }
+      {
+        "name": "Express.js",
+        "level": "Advanced",
+        "notes": "REST APIs, Middleware, Auth"
+      },
+      {
+        "name": "NestJS",
+        "level": "Intermediate",
+        "notes": "Modules, Guards, Decorators"
+      },
+      {
+        "name": "Fastify",
+        "level": "Beginner-Intermediate",
+        "notes": "Faster than Express"
+      }
     ],
     "python": [
-      { "name": "FastAPI", "level": "Advanced", "notes": "Best for AI APIs, async, Pydantic" },
-      { "name": "Flask", "level": "Intermediate", "notes": "Lightweight, for prototyping" }
+      {
+        "name": "FastAPI",
+        "level": "Advanced",
+        "notes": "Best for AI APIs, async, Pydantic"
+      },
+      {
+        "name": "Flask",
+        "level": "Intermediate",
+        "notes": "Lightweight, for prototyping"
+      }
     ],
     "databases": {
       "sql": [
-        { "name": "PostgreSQL", "level": "Advanced" },
-        { "name": "MySQL", "level": "Intermediate" },
-        { "name": "SQLite", "level": "Intermediate" }
+        {
+          "name": "PostgreSQL",
+          "level": "Advanced"
+        },
+        {
+          "name": "MySQL",
+          "level": "Intermediate"
+        },
+        {
+          "name": "SQLite",
+          "level": "Intermediate"
+        }
       ],
       "nosql": [
-        { "name": "MongoDB", "level": "Intermediate" },
-        { "name": "Redis", "level": "Intermediate", "notes": "Cache, Sessions, Queue" }
+        {
+          "name": "MongoDB",
+          "level": "Intermediate"
+        },
+        {
+          "name": "Redis",
+          "level": "Intermediate",
+          "notes": "Cache, Sessions, Queue"
+        }
       ]
     },
-    "orms": ["Prisma (Node.js)", "TypeORM (Node.js)", "Mongoose (MongoDB)", "SQLAlchemy (Python)"],
-    "apis": ["RESTful APIs", "WebSocket", "tRPC"],
-    "patterns": ["Docker", "Microservices Pattern"]
+    "orms": [
+      "Prisma (Node.js)",
+      "TypeORM (Node.js)",
+      "Mongoose (MongoDB)",
+      "SQLAlchemy (Python)"
+    ],
+    "apis": [
+      "RESTful APIs",
+      "WebSocket",
+      "tRPC"
+    ],
+    "patterns": [
+      "Docker",
+      "Microservices Pattern"
+    ]
   },
   "ai": {
-    "dataAnalysis": ["Pandas", "NumPy", "Matplotlib", "Seaborn", "Plotly"],
+    "dataAnalysis": [
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Seaborn",
+      "Plotly"
+    ],
     "machineLearning": [
-      { "name": "Scikit-learn", "use": "Classic ML, preprocessing, evaluation", "level": "Advanced" },
-      { "name": "TensorFlow / Keras", "use": "Deep Neural Networks", "level": "Intermediate" },
-      { "name": "PyTorch", "use": "Research and custom models", "level": "Intermediate" },
-      { "name": "XGBoost / LightGBM", "use": "Boosting models for tabular data", "level": "Intermediate" }
+      {
+        "name": "Scikit-learn",
+        "use": "Classic ML, preprocessing, evaluation",
+        "level": "Advanced"
+      },
+      {
+        "name": "TensorFlow / Keras",
+        "use": "Deep Neural Networks",
+        "level": "Intermediate"
+      },
+      {
+        "name": "PyTorch",
+        "use": "Research and custom models",
+        "level": "Intermediate"
+      },
+      {
+        "name": "XGBoost / LightGBM",
+        "use": "Boosting models for tabular data",
+        "level": "Intermediate"
+      }
     ],
-    "nlp": ["NLTK", "spaCy", "Transformers (HuggingFace)"],
+    "nlp": [
+      "NLTK",
+      "spaCy",
+      "Transformers (HuggingFace)"
+    ],
     "llm": [
-      { "name": "LangChain", "use": "Building LLM apps, Chains, Agents", "level": "Advanced" },
-      { "name": "LangGraph", "use": "Complex task automation with nodes & edges", "level": "Intermediate" },
-      { "name": "AI APIs", "use": "LLMs, Embeddings", "level": "Advanced" }
+      {
+        "name": "LangChain",
+        "use": "Building LLM apps, Chains, Agents",
+        "level": "Advanced"
+      },
+      {
+        "name": "LangGraph",
+        "use": "Complex task automation with nodes & edges",
+        "level": "Intermediate"
+      },
+      {
+        "name": "AI APIs",
+        "use": "LLMs, Embeddings",
+        "level": "Advanced"
+      }
     ],
-    "vectorDatabases": ["ChromaDB", "FAISS", "Pinecone"],
-    "patterns": ["RAG", "AI Agents", "Tool Calling / Function Calling"]
+    "vectorDatabases": [
+      "ChromaDB",
+      "FAISS",
+      "Pinecone"
+    ],
+    "patterns": [
+      "RAG",
+      "AI Agents",
+      "Tool Calling / Function Calling"
+    ]
   },
   "mobile": {
     "android": [
-      { "name": "Kotlin", "level": "Good", "notes": "Coroutines + Flow" },
-      { "name": "Jetpack Compose", "level": "Good", "notes": "Declarative Android UIs" },
-      { "name": "Clean Architecture + MVVM", "level": "Good", "notes": "Layer separation" },
-      { "name": "Hilt (Dagger)", "level": "Intermediate", "notes": "Dependency Injection" },
-      { "name": "Material Design 3", "level": "Good", "notes": "Consistent design system + RTL" }
+      {
+        "name": "Kotlin",
+        "level": "Good",
+        "notes": "Coroutines + Flow"
+      },
+      {
+        "name": "Jetpack Compose",
+        "level": "Good",
+        "notes": "Declarative Android UIs"
+      },
+      {
+        "name": "Clean Architecture + MVVM",
+        "level": "Good",
+        "notes": "Layer separation"
+      },
+      {
+        "name": "Hilt (Dagger)",
+        "level": "Intermediate",
+        "notes": "Dependency Injection"
+      },
+      {
+        "name": "Material Design 3",
+        "level": "Good",
+        "notes": "Consistent design system + RTL"
+      }
     ],
-    "storage": ["Room Database", "DataStore", "Encrypted Storage"],
-    "components": ["WorkManager", "AlarmManager", "UsageStatsManager", "PackageManager", "Custom Launcher API"],
-    "testing": ["JUnit", "Mockito", "Espresso", "Turbine", "Detekt"]
+    "storage": [
+      "Room Database",
+      "DataStore",
+      "Encrypted Storage"
+    ],
+    "components": [
+      "WorkManager",
+      "AlarmManager",
+      "UsageStatsManager",
+      "PackageManager",
+      "Custom Launcher API"
+    ],
+    "testing": [
+      "JUnit",
+      "Mockito",
+      "Espresso",
+      "Turbine",
+      "Detekt"
+    ]
   },
   "devops": {
-    "versionControl": ["Git (Advanced)", "GitHub", "GitLab"],
-    "containers": [
-      { "name": "Docker", "level": "Advanced" },
-      { "name": "Docker Compose", "level": "Advanced" },
-      { "name": "Kubernetes (K8s)", "level": "Beginner" }
+    "versionControl": [
+      "Git (Advanced)",
+      "GitHub",
+      "GitLab"
     ],
-    "cicd": ["GitHub Actions", "GitLab CI"],
-    "cloud": ["Vercel (Advanced)", "Netlify (Advanced)"],
-    "servers": ["Nginx", "Apache"],
+    "containers": [
+      {
+        "name": "Docker",
+        "level": "Advanced"
+      },
+      {
+        "name": "Docker Compose",
+        "level": "Advanced"
+      },
+      {
+        "name": "Kubernetes (K8s)",
+        "level": "Beginner"
+      }
+    ],
+    "cicd": [
+      "GitHub Actions",
+      "GitLab CI"
+    ],
+    "cloud": [
+      "Vercel (Advanced)",
+      "Netlify (Advanced)"
+    ],
+    "servers": [
+      "Nginx",
+      "Apache"
+    ],
     "linux": [
       "Arch Linux — Daily OS",
       "Ubuntu / Debian — for servers",
       "Bash / Shell Scripting — task automation",
       "Hyprland (Wayland WM) — custom workspace"
     ],
-    "networking": ["DNS", "HTTPS", "SSL/TLS", "Firewall", "SSH", "VPN"]
+    "networking": [
+      "DNS",
+      "HTTPS",
+      "SSL/TLS",
+      "Firewall",
+      "SSH",
+      "VPN"
+    ]
   },
   "methodology": {
-    "development": ["Agile / Scrum", "TDD", "Clean Code", "SOLID", "DRY / YAGNI / KISS"],
-    "dailyTools": [
-      { "name": "Neovim", "use": "Primary Editor" },
-      { "name": "Kitty Terminal", "use": "Terminal Emulator" },
-      { "name": "Tmux", "use": "Session Management" },
-      { "name": "Hyprland", "use": "Window Manager (Tiling WM)" },
-      { "name": "Arch Linux", "use": "Daily OS" }
+    "development": [
+      "Agile / Scrum",
+      "TDD",
+      "Clean Code",
+      "SOLID",
+      "DRY / YAGNI / KISS"
     ],
-    "collaboration": ["GitHub / GitLab", "Obsidian", "Figma", "Postman"],
+    "dailyTools": [
+      {
+        "name": "Neovim",
+        "use": "Primary Editor"
+      },
+      {
+        "name": "Kitty Terminal",
+        "use": "Terminal Emulator"
+      },
+      {
+        "name": "Tmux",
+        "use": "Session Management"
+      },
+      {
+        "name": "Hyprland",
+        "use": "Window Manager (Tiling WM)"
+      },
+      {
+        "name": "Arch Linux",
+        "use": "Daily OS"
+      }
+    ],
+    "collaboration": [
+      "GitHub / GitLab",
+      "Obsidian",
+      "Figma",
+      "Postman"
+    ],
     "softSkills": [
       "Technical team leadership",
       "Communication with non-technical teams",
@@ -119,10 +373,22 @@
   },
   "entrepreneurship": {
     "areas": [
-      { "area": "Product Building", "details": "User-centric thinking, MVP, Product-Market Fit" },
-      { "area": "Business Models", "details": "Understanding revenue generation and value creation" },
-      { "area": "Strategic Thinking", "details": "Market analysis, competitors, and differentiation" },
-      { "area": "Go-to-Market", "details": "How to launch a product and reach early customers" }
+      {
+        "area": "Product Building",
+        "details": "User-centric thinking, MVP, Product-Market Fit"
+      },
+      {
+        "area": "Business Models",
+        "details": "Understanding revenue generation and value creation"
+      },
+      {
+        "area": "Strategic Thinking",
+        "details": "Market analysis, competitors, and differentiation"
+      },
+      {
+        "area": "Go-to-Market",
+        "details": "How to launch a product and reach early customers"
+      }
     ],
     "skills": [
       "Lean Startup Methodology",
@@ -131,7 +397,12 @@
       "Investor Communication",
       "Technical Product Management"
     ],
-    "sources": ["Y Combinator", "a16z", "Paul Graham Essays", "Indie Hacking"],
+    "sources": [
+      "Y Combinator",
+      "a16z",
+      "Paul Graham Essays",
+      "Indie Hacking"
+    ],
     "goal": "Build a real tech product that solves a local or regional problem."
   }
 }

@@ -9,7 +9,7 @@ import skills from '@/data/skills.json';
 import experienceData from '@/data/experience.json';
 
 const TECH_COLORS = [
-  COLORS.red, COLORS.blue, COLORS.yellow, COLORS.sky, 
+  COLORS.red, COLORS.blue, COLORS.yellow, COLORS.sky,
   COLORS.green, COLORS.peach, COLORS.lavender, COLORS.mauve
 ];
 
@@ -33,8 +33,8 @@ const BAR_COLORS = [
 
 const SKILL_BARS = skills.overview.map((skill, i) => ({
   name: skill.category,
-  pct: skill.level * 20, // 1-5 scale to 20-100%
-  bg: BAR_COLORS[i % BAR_COLORS.length],
+  level: skill.level, // 1-5 scale
+  color: [COLORS.mauve, COLORS.teal, COLORS.sky, COLORS.green, COLORS.peach, COLORS.red, COLORS.lavender][i % 7],
   d: 0.1 * (i + 1),
 }));
 
@@ -100,18 +100,15 @@ export function Workspace2(): React.ReactElement {
       {/* Bars */}
       <Win title="proficiency.sh" delay={0.06} style={{ gridColumn: '1', gridRow: '2' }}>
         <SectionHeader icon={Zap} label="Proficiency Level" color={COLORS.yellow} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
-          {SKILL_BARS.map(({ name, pct, bg, d }) => (
-            <div key={name}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.92rem', marginBottom: 4 }}>
-                <span style={{ color: COLORS.subtext1 }}>{name}</span>
-                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '0.82rem', color: COLORS.overlay1 }}>
-                  {pct}%
-                </span>
+        <div className="prof-container">
+          {SKILL_BARS.map(({ name, level, color }) => (
+            <div key={name} className="prof-item">
+              <div className="prof-bars">
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <div key={i} className="prof-bar" style={{ background: i < level ? color : "transparent" }} />
+                ))}
               </div>
-              <div style={{ height: 5, borderRadius: 99, background: COLORS.surface1, overflow: 'hidden' }}>
-                <div className="bar-fill" style={{ width: `${pct}%`, background: bg, animationDelay: `${d}s` }} />
-              </div>
+              <span className="prof-title" style={{ color: COLORS.subtext1 }}>{name}</span>
             </div>
           ))}
         </div>

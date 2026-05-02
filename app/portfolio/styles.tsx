@@ -266,6 +266,36 @@ export function GlobalStyle(): React.ReactElement {
         opacity: 1;
       }
 
+      .prof-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 5px;
+        margin-top: 15px;
+        height: calc(100% - 50px);
+      }
+      .prof-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+      .prof-bars {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 4px;
+      }
+      .prof-bar {
+        width: 18px;
+        height: 4px;
+        border-radius: 2px;
+      }
+      .prof-title {
+        font-size: 0.65rem;
+        text-align: center;
+        line-height: 1.2;
+      }
+
       /* Responsive Mobile Layout */
       @media (max-width: 900px) {
         .ws-grid {
@@ -316,6 +346,33 @@ export function GlobalStyle(): React.ReactElement {
         
         .sys-stats-grid {
           grid-template-columns: 1fr !important;
+        }
+
+        .prof-container {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          justify-content: flex-start !important;
+          height: auto !important;
+          gap: 12px !important;
+          margin-top: 5px !important;
+        }
+        .prof-item {
+          flex-direction: row !important;
+          justify-content: space-between !important;
+          align-items: center !important;
+          gap: 10px !important;
+        }
+        .prof-bars {
+          flex-direction: row !important;
+          gap: 4px !important;
+        }
+        .prof-bar {
+          width: 4px !important;
+          height: 16px !important;
+        }
+        .prof-title {
+          font-size: 0.92rem !important;
+          text-align: left !important;
         }
 
         .hide-mobile {
