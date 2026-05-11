@@ -113,11 +113,33 @@ export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: T
         <a 
           href="/cv.pdf" 
           download="Souhaieb_Askri_CV.pdf"
-          style={{ color: 'inherit', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          style={{ 
+            color: 'inherit', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 6, 
+            cursor: 'pointer',
+            padding: '6px 11px',
+            borderRadius: 6,
+            fontSize: 12,
+            fontWeight: 600,
+            background: 'rgba(180,190,254,0.1)',
+            border: '1px solid rgba(180,190,254,0.2)',
+            transition: 'background 0.15s, border-color 0.15s',
+          }}
           title="Download CV"
           className="icon-hover"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(180,190,254,0.2)';
+            e.currentTarget.style.borderColor = 'rgba(180,190,254,0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(180,190,254,0.1)';
+            e.currentTarget.style.borderColor = 'rgba(180,190,254,0.2)';
+          }}
         >
-          <Download size={18} />
+          <span>CV</span>
+          <Download size={16} />
         </a>
         <div 
           onClick={toggleTheme}
