@@ -1,58 +1,778 @@
 'use client';
 
-import React from 'react';
-import { Cpu, Zap, Briefcase, Hexagon, Code, Code2, Layers, Atom, Triangle, Database, Brain, Container } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import {
+  Globe, Database, Server, Brain, Container, Cpu, X,
+  ChevronRight, Layers, Lightbulb, Users, MessageSquare,
+  BookOpen, Rocket, Star, Code2, Zap, Heart, Image as ImageIcon,
+  MonitorPlay
+} from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
 import { SectionHeader } from './SectionHeader';
 import skills from '@/data/skills.json';
-import experienceData from '@/data/experience.json';
 
-const TECH_COLORS = [
-  COLORS.red, COLORS.blue, COLORS.yellow, COLORS.sky,
-  COLORS.green, COLORS.peach, COLORS.lavender, COLORS.mauve
+// ─── Skill Domain Data ────────────────────────────────────────────────────────
+
+const DOMAIN_WEB = {
+  id: 'web',
+  title: 'Web Development',
+  icon: Globe,
+  color: COLORS.blue,
+  gradient: `${COLORS.mauve},${COLORS.blue}`,
+  sections: [
+    {
+      label: 'Frontend',
+      color: COLORS.mauve,
+      core: ['React.js', 'Next.js', 'TypeScript', 'HTML5 / CSS3'],
+      more: {
+        Frameworks: ['React.js — Hooks, Context, Zustand, React Query', 'Next.js — App Router, SSR, SSG, API Routes', 'TypeScript — Generics, Types, Interfaces'],
+        Styling: ['Tailwind CSS', 'Material UI (MUI)', 'Framer Motion', 'Styled Components'],
+        'Build Tools': ['Vite', 'Webpack', 'npm / yarn / pnpm'],
+        Fundamentals: ['HTML5 Semantic & a11y', 'CSS3 Flexbox / Grid / Animations', 'JavaScript ES6+ — Async/Await, Modules'],
+      },
+    },
+    {
+      label: 'Backend',
+      color: COLORS.teal,
+      core: ['Node.js / NestJS', 'FastAPI / Flask', 'PostgreSQL', 'REST / WebSocket'],
+      more: {
+        'Node.js': ['Express.js — REST APIs, Middleware, Auth', 'NestJS — Modules, Guards, Decorators', 'Fastify'],
+        Python: ['FastAPI — Best for AI APIs, async, Pydantic', 'Flask — Lightweight prototyping'],
+        Databases: ['PostgreSQL (Advanced)', 'MySQL / SQLite', 'MongoDB / Redis'],
+        ORMs: ['Prisma', 'TypeORM', 'SQLAlchemy'],
+        APIs: ['RESTful APIs', 'WebSocket', 'tRPC'],
+      },
+    },
+  ],
+};
+
+const DOMAIN_AI = {
+  id: 'ai',
+  title: 'Data & AI',
+  icon: Brain,
+  color: COLORS.pink,
+  gradient: `${COLORS.pink},${COLORS.mauve}`,
+  sections: [
+    {
+      label: 'Data Analysis',
+      color: COLORS.peach,
+      core: ['Pandas / NumPy', 'Matplotlib / Plotly', 'Scikit-learn', 'Jupyter'],
+      more: {
+        'Data Analysis': ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Plotly'],
+        'Machine Learning': ['Scikit-learn — Classic ML, preprocessing', 'TensorFlow / Keras — Deep Neural Networks', 'PyTorch — Research & custom models', 'XGBoost / LightGBM — Boosting models'],
+      },
+    },
+    {
+      label: 'AI / LLMs',
+      color: COLORS.pink,
+      core: ['LangChain', 'LangGraph', 'HuggingFace', 'RAG / Agents'],
+      more: {
+        'LLM Frameworks': ['LangChain — Chains, Agents, LLM apps', 'LangGraph — Complex task automation with nodes & edges', 'AI APIs — LLMs, Embeddings'],
+        NLP: ['NLTK', 'spaCy', 'Transformers (HuggingFace)'],
+        'Vector Databases': ['ChromaDB', 'FAISS', 'Pinecone'],
+        Patterns: ['RAG (Retrieval Augmented Generation)', 'AI Agents', 'Tool Calling / Function Calling'],
+        'Big Data': ['Apache Kafka', 'Apache Spark (Streaming)', 'HBase'],
+      },
+    },
+  ],
+};
+
+const DOMAIN_DEVOPS = {
+  id: 'devops',
+  title: 'DevOps & Infrastructure',
+  icon: Container,
+  color: COLORS.green,
+  gradient: `${COLORS.green},${COLORS.teal}`,
+  sections: [
+    {
+      label: 'Containers & CI/CD',
+      color: COLORS.green,
+      core: ['Docker / Compose', 'GitHub Actions', 'GitLab CI', 'Kubernetes (basics)'],
+      more: {
+        Containers: ['Docker (Advanced)', 'Docker Compose (Advanced)', 'Kubernetes K8s (Beginner)'],
+        'CI/CD': ['GitHub Actions', 'GitLab CI'],
+        Cloud: ['Vercel (Advanced)', 'Netlify (Advanced)'],
+        Servers: ['Nginx', 'Apache'],
+      },
+    },
+    {
+      label: 'Linux & Networking',
+      color: COLORS.teal,
+      core: ['Arch Linux', 'Bash Scripting', 'SSH / VPN', 'Nginx'],
+      more: {
+        Linux: ['Arch Linux — Daily OS', 'Ubuntu / Debian — for servers', 'Bash / Shell Scripting — task automation', 'Hyprland (Wayland WM) — custom workspace'],
+        Networking: ['DNS', 'HTTPS', 'SSL/TLS', 'Firewall', 'SSH', 'VPN'],
+        'Version Control': ['Git (Advanced)', 'GitHub', 'GitLab'],
+      },
+    },
+  ],
+};
+
+const SOFT_SKILLS = [
+  { icon: MessageSquare, label: 'Communication', desc: 'Clear communication with technical and non-technical teams', color: COLORS.blue },
+  { icon: Users, label: 'Team Leadership', desc: 'Leading technical teams and coordinating project milestones', color: COLORS.mauve },
+  { icon: BookOpen, label: 'Documentation', desc: 'Writing clear, structured project documentation', color: COLORS.teal },
+  { icon: Lightbulb, label: 'Problem Solving', desc: 'Breaking complex problems into actionable solutions', color: COLORS.yellow },
+  { icon: Rocket, label: 'Self-Learning', desc: 'Continuous learning and keeping up with latest tech', color: COLORS.peach },
+  { icon: Star, label: 'Adaptability', desc: 'Comfortable switching between domains and tech stacks', color: COLORS.green },
+  { icon: Heart, label: 'Work Ethic', desc: 'Driven, consistent, and detail-oriented in all projects', color: COLORS.pink },
+  { icon: Zap, label: 'Agile & Scrum', desc: 'TDD, Clean Code, SOLID, Lean Startup methodology', color: COLORS.sky },
 ];
 
-const TECH_ICONS = [Atom, Triangle, Hexagon, Code2, Zap, Database, Brain, Container];
+const LOGO_BASE_URL = '/logos/tech';
 
-const TECHNOLOGIES = skills.topTechnologies.slice(0, 8).map((label, i) => ({
-  icon: TECH_ICONS[i % TECH_ICONS.length],
-  label,
-  ac: TECH_COLORS[i % TECH_COLORS.length],
-}));
+const TECH_LOGOS: Record<string, string> = {
+  'React.js': `${LOGO_BASE_URL}/react.svg`,
+  'Next.js': `${LOGO_BASE_URL}/nextjs.svg`,
+  'TypeScript': `${LOGO_BASE_URL}/typescript.svg`,
+  'HTML5': `${LOGO_BASE_URL}/html5.svg`,
+  'Node.js': `${LOGO_BASE_URL}/nodejs.svg`,
+  'NestJS': `${LOGO_BASE_URL}/nestjs.svg`,
+  'FastAPI': `${LOGO_BASE_URL}/fastapi.svg`,
+  'Flask': `${LOGO_BASE_URL}/flask.svg`,
+  'PostgreSQL': `${LOGO_BASE_URL}/postgresql.svg`,
+  'Pandas': `${LOGO_BASE_URL}/pandas.svg`,
+  'NumPy': `${LOGO_BASE_URL}/numpy.svg`,
+  'Plotly': `${LOGO_BASE_URL}/plotly.svg`,
+  'Scikit-learn': `${LOGO_BASE_URL}/scikitlearn.svg`,
+  'Jupyter': `${LOGO_BASE_URL}/jupyter.svg`,
+  'HuggingFace': `${LOGO_BASE_URL}/huggingface.svg`,
+  'Docker': `${LOGO_BASE_URL}/docker.svg`,
+  'Compose': `${LOGO_BASE_URL}/docker.svg`,
+  'GitHub Actions': `${LOGO_BASE_URL}/githubactions.svg`,
+  'GitLab CI': `${LOGO_BASE_URL}/gitlab.svg`,
+  'Kubernetes': `${LOGO_BASE_URL}/kubernetes.svg`,
+  'Arch Linux': `${LOGO_BASE_URL}/archlinux.svg`,
+  'Bash Scripting': `${LOGO_BASE_URL}/gnubash.svg`,
+  'VPN': `${LOGO_BASE_URL}/openvpn.svg`,
+  'Nginx': `${LOGO_BASE_URL}/nginx.svg`,
+  'Python': `${LOGO_BASE_URL}/python.svg`,
+  'LangChain': `${LOGO_BASE_URL}/langchain.svg`,
+  'Kafka': `${LOGO_BASE_URL}/apachekafka.svg`,
+  'Spark': `${LOGO_BASE_URL}/apachespark.svg`,
+  'HBase': `${LOGO_BASE_URL}/apachehbase.svg`,
+  'Streamlit': `${LOGO_BASE_URL}/streamlit.svg`,
+  'Kotlin': `${LOGO_BASE_URL}/kotlin.svg`,
+  'Jetpack Compose': `${LOGO_BASE_URL}/jetpackcompose.svg`,
+  'Vercel': `${LOGO_BASE_URL}/vercel.svg`,
+};
 
-const BAR_COLORS = [
-  `linear-gradient(90deg,${COLORS.mauve},${COLORS.blue})`,
-  `linear-gradient(90deg,${COLORS.blue},${COLORS.teal})`,
-  `linear-gradient(90deg,${COLORS.sapphire},${COLORS.sky})`,
-  `linear-gradient(90deg,${COLORS.green},${COLORS.teal})`,
-  `linear-gradient(90deg,${COLORS.peach},${COLORS.yellow})`,
-  `linear-gradient(90deg,${COLORS.pink},${COLORS.red})`,
-  `linear-gradient(90deg,${COLORS.lavender},${COLORS.mauve})`,
+const TECH_LOGO_COLORS: Record<string, string> = {
+  'React.js': COLORS.blue,
+  'Next.js': COLORS.text,
+  'TypeScript': COLORS.blue,
+  'HTML5': COLORS.peach,
+  'CSS3': COLORS.blue,
+  'Node.js': COLORS.green,
+  'NestJS': COLORS.red,
+  'FastAPI': COLORS.teal,
+  'Flask': COLORS.text,
+  'PostgreSQL': COLORS.blue,
+  'Pandas': COLORS.mauve,
+  'NumPy': COLORS.blue,
+  'Matplotlib': COLORS.peach,
+  'Plotly': COLORS.sapphire,
+  'Scikit-learn': COLORS.peach,
+  'Jupyter': COLORS.peach,
+  'HuggingFace': COLORS.yellow,
+  'Docker': COLORS.sky,
+  'Compose': COLORS.sky,
+  'GitHub Actions': COLORS.sapphire,
+  'GitLab CI': COLORS.peach,
+  'Kubernetes': COLORS.blue,
+  'Arch Linux': COLORS.sapphire,
+  'Bash Scripting': COLORS.green,
+  'SSH': COLORS.overlay2,
+  'VPN': COLORS.peach,
+  'Nginx': COLORS.green,
+  'Python': COLORS.yellow,
+  'LangChain': COLORS.mauve,
+  'LangGraph': COLORS.mauve,
+  'RAG': COLORS.peach,
+  'Agents': COLORS.sky,
+  'Kafka': COLORS.text,
+  'Spark': COLORS.peach,
+  'HBase': COLORS.red,
+  'Streamlit': COLORS.red,
+  'Kotlin': COLORS.mauve,
+  'Jetpack Compose': COLORS.sky,
+  'Vercel': COLORS.text,
+  'ChromaDB': COLORS.green,
+};
+
+function splitTechParts(tech: string): string[] {
+  return tech.split('/').map((part) => part.trim()).filter(Boolean);
+}
+
+function normalizeTechLabel(label: string): string {
+  return label.replace(/\s*\(.*?\)\s*/g, '').trim();
+}
+
+function buildTechInitials(label: string): string {
+  const clean = normalizeTechLabel(label).replace(/[^A-Za-z0-9]+/g, ' ').trim();
+  const parts = clean.split(/\s+/).filter(Boolean);
+  const initials = parts.map((part) => part[0]).join('');
+  return (initials.slice(0, 2) || '?').toUpperCase();
+}
+
+function getTechLogoColor(label: string): string {
+  const normalized = normalizeTechLabel(label);
+  return TECH_LOGO_COLORS[normalized] ?? COLORS.overlay1;
+}
+
+function TechLogo({ label, size = 18 }: { label: string; size?: number }) {
+  const normalized = normalizeTechLabel(label);
+  const logo = TECH_LOGOS[normalized];
+  const tint = getTechLogoColor(normalized);
+  const boxStyle: React.CSSProperties = {
+    width: size,
+    height: size,
+    borderRadius: Math.max(3, Math.round(size * 0.28)),
+    background: COLORS.surface1,
+    border: '1px solid rgba(255,255,255,.08)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  };
+  const innerSize = Math.max(10, size - 6);
+
+  if (logo) {
+    return (
+      <span style={boxStyle}>
+        <span
+          aria-hidden="true"
+          style={{
+            width: innerSize,
+            height: innerSize,
+            backgroundColor: tint,
+            WebkitMask: `url(${logo}) center / contain no-repeat`,
+            mask: `url(${logo}) center / contain no-repeat`,
+            display: 'block',
+          }}
+        />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      style={{
+        ...boxStyle,
+        fontSize: Math.max(7, size - 10),
+        fontWeight: 700,
+        color: tint,
+        fontFamily: "'JetBrains Mono',monospace",
+      }}
+    >
+      {buildTechInitials(label)}
+    </span>
+  );
+}
+
+// Tech Stack slides (placeholder)
+const STACK_SLIDES = [
+  { label: 'Full-Stack Web', tags: ['Next.js', 'NestJS', 'PostgreSQL', 'Docker'] },
+  { label: 'AI & LLM Apps', tags: ['Python', 'LangChain', 'FastAPI', 'ChromaDB'] },
+  { label: 'Data Engineering', tags: ['Kafka', 'Spark', 'HBase', 'Streamlit'] },
+  { label: 'Android Development', tags: ['Kotlin', 'Jetpack Compose', 'MVVM', 'Hilt'] },
+  { label: 'DevOps Pipeline', tags: ['Docker', 'GitHub Actions', 'Nginx', 'Vercel'] },
 ];
 
-const SKILL_BARS = skills.overview.map((skill, i) => ({
-  name: skill.category,
-  level: skill.level, // 1-5 scale
-  color: [COLORS.mauve, COLORS.teal, COLORS.sky, COLORS.green, COLORS.peach, COLORS.red, COLORS.lavender][i % 7],
-  d: 0.1 * (i + 1),
-}));
+// ─── Skill Detail Modal ───────────────────────────────────────────────────────
 
-const EXP_COLORS = [
-  { dc: COLORS.mauve, ds: `rgba(203,166,247,.5)` },
-  { dc: COLORS.blue, ds: `rgba(137,180,250,.5)` },
-  { dc: COLORS.teal, ds: `rgba(148,226,213,.5)` },
-  { dc: COLORS.peach, ds: `rgba(250,179,135,.5)` },
-];
+type DomainData = typeof DOMAIN_WEB | typeof DOMAIN_AI | typeof DOMAIN_DEVOPS;
 
-const EXPERIENCE = experienceData.map((exp, i) => ({
-  role: exp.title,
-  co: exp.organization,
-  date: exp.period || exp.duration,
-  dc: EXP_COLORS[i % EXP_COLORS.length].dc,
-  ds: EXP_COLORS[i % EXP_COLORS.length].ds,
-  desc: exp.highlights[0],
-}));
+function SkillModal({ domain, onClose }: { domain: DomainData; onClose: () => void }) {
+  const [mounted, setMounted] = useState(false);
+  const [activeSection, setActiveSection] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+    const handler = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  if (!mounted) return null;
+
+  const section = domain.sections[activeSection];
+
+  const modalContent = (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 1000,
+        background: 'rgba(0,0,0,0.65)',
+        backdropFilter: 'blur(6px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        animation: 'sk-fadeIn .2s ease',
+        padding: '24px 16px',
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: COLORS.mantle,
+          border: `1px solid rgba(255,255,255,.1)`,
+          borderRadius: 18,
+          width: '100%',
+          maxWidth: 720,
+          maxHeight: '85vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          boxShadow: '0 32px 80px rgba(0,0,0,.6)',
+          animation: 'sk-slideUp .25s cubic-bezier(.34,1.56,.64,1)',
+          position: 'relative',
+        }}
+      >
+        {/* Title Bar */}
+        <div
+          style={{
+            height: 40,
+            flexShrink: 0,
+            background: COLORS.crust,
+            borderBottom: `1px solid rgba(255,255,255,0.05)`,
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 12px',
+            position: 'relative',
+            userSelect: 'none',
+          }}
+        >
+          <div style={{ display: 'flex', gap: 6 }}>
+            {[COLORS.red, COLORS.yellow, COLORS.green].map((col, i) => (
+              <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', background: col }} />
+            ))}
+          </div>
+          <span
+            style={{
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              fontSize: 13,
+              color: COLORS.overlay1,
+              fontWeight: 500,
+              fontFamily: "'JetBrains Mono',monospace",
+            }}
+          >
+            {domain.id}.skills
+          </span>
+        </div>
+
+        {/* Header */}
+        <div
+          style={{
+            padding: '20px 24px 16px',
+            borderBottom: `1px solid rgba(255,255,255,.06)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            position: 'relative',
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent,${domain.color},transparent)`, opacity: 0.5 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 44, height: 44,
+              background: COLORS.surface0,
+              borderRadius: 10,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              border: `1px solid rgba(255,255,255,.08)`,
+            }}>
+              <domain.icon size={22} color={domain.color} />
+            </div>
+            <div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: COLORS.text }}>{domain.title}</div>
+              <div style={{ fontSize: '0.8rem', color: COLORS.subtext0 }}>Full skill breakdown</div>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: COLORS.surface0,
+              border: `1px solid rgba(255,255,255,.08)`,
+              borderRadius: 8,
+              color: COLORS.overlay1,
+              width: 32, height: 32,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all .15s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = COLORS.surface1; e.currentTarget.style.color = COLORS.text; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = COLORS.surface0; e.currentTarget.style.color = COLORS.overlay1; }}
+          >
+            <X size={15} />
+          </button>
+        </div>
+
+        {/* Tab bar */}
+        <div style={{ display: 'flex', gap: 0, padding: '0 24px', borderBottom: `1px solid rgba(255,255,255,.06)`, background: COLORS.crust }}>
+          {domain.sections.map((sec, i) => (
+            <button
+              key={sec.label}
+              onClick={() => setActiveSection(i)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                borderBottom: activeSection === i ? `2px solid ${sec.color}` : '2px solid transparent',
+                color: activeSection === i ? sec.color : COLORS.overlay1,
+                padding: '10px 16px',
+                fontSize: '0.82rem',
+                fontWeight: activeSection === i ? 600 : 400,
+                cursor: 'pointer',
+                transition: 'all .15s',
+                fontFamily: "'JetBrains Mono',monospace",
+                letterSpacing: '.02em',
+              }}
+            >
+              {sec.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Body */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 18 }}>
+          {Object.entries(section.more).map(([cat, items]) => (
+            <div key={cat}>
+              <div style={{
+                fontSize: '0.7rem',
+                fontFamily: "'JetBrains Mono',monospace",
+                color: section.color,
+                letterSpacing: '.08em',
+                textTransform: 'uppercase',
+                marginBottom: 8,
+              }}>
+                {cat}
+              </div>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                {items.map((item) => (
+                  <span
+                    key={item}
+                    style={{
+                      fontFamily: "'JetBrains Mono',monospace",
+                      fontSize: '0.73rem',
+                      padding: '3px 10px',
+                      borderRadius: 99,
+                      background: COLORS.surface0,
+                      color: COLORS.subtext1,
+                      border: `1px solid rgba(255,255,255,.07)`,
+                    }}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes sk-fadeIn  { from { opacity:0 } to { opacity:1 } }
+        @keyframes sk-slideUp { from { transform:translateY(28px) scale(.97);opacity:0 } to { transform:translateY(0) scale(1);opacity:1 } }
+      `}</style>
+    </div>
+  );
+
+  return createPortal(modalContent, document.body);
+}
+
+// ─── Skill Domain Window ──────────────────────────────────────────────────────
+
+function SkillDomainWin({ domain, delay, row }: { domain: DomainData; delay: number; row: number }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Win
+        title={`${domain.id}.skills`}
+        delay={delay}
+        scroll={false}
+        style={{ gridColumn: 1, gridRow: row, display: 'flex', flexDirection: 'column', minHeight: 0 }}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: `linear-gradient(135deg,${domain.gradient})`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <domain.icon size={16} color="#111" />
+          </div>
+          <span style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.text }}>{domain.title}</span>
+          <div style={{ flex: 1, height: 1, background: `linear-gradient(to left,transparent,${COLORS.surface1})` }} />
+        </div>
+
+        {/* Two sub-sections side by side */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9, flex: 1, minHeight: 0 }}>
+          {domain.sections.map((sec) => (
+            <div
+              key={sec.label}
+              style={{
+                background: COLORS.surface0,
+                borderRadius: 10,
+                padding: '10px 11px',
+                border: `1px solid rgba(255,255,255,.05)`,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 6,
+              }}
+            >
+              <div style={{
+                fontSize: '0.7rem',
+                fontFamily: "'JetBrains Mono',monospace",
+                color: sec.color,
+                letterSpacing: '.06em',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+                marginBottom: 2,
+              }}>
+                {sec.label}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {sec.core.map((tech) => (
+                  <div
+                    key={tech}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      fontSize: '1.12rem',
+                      color: COLORS.subtext1,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      {splitTechParts(tech).map((part, index) => (
+                        <TechLogo key={`${tech}-${part}-${index}`} label={part} size={24} />
+                      ))}
+                    </div>
+                    <span>{tech}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* View More button */}
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            marginTop: 10,
+            width: '100%',
+            padding: '12px 0',
+            background: domain.color,
+            border: `1px solid rgba(255,255,255,.08)`,
+            borderRadius: 8,
+            color: COLORS.base,
+            fontWeight: 700,
+            fontSize: '1.08rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 5,
+            transition: 'opacity .15s',
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+        >
+          View More <ChevronRight size={14} />
+        </button>
+      </Win>
+
+      {open && <SkillModal domain={domain} onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+// ─── Tech Stack Slideshow ─────────────────────────────────────────────────────
+
+function TechStackSlideshow() {
+  const [current, setCurrent] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimating(true);
+      setTimeout(() => {
+        setCurrent((c) => (c + 1) % STACK_SLIDES.length);
+        setAnimating(false);
+      }, 300);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const slide = STACK_SLIDES[current];
+
+  return (
+    <Win
+      title="tech-stack.showcase"
+      delay={0.15}
+      style={{ gridColumn: 2, gridRow: '2 / 4', display: 'flex', flexDirection: 'column', minHeight: 0 }}
+    >
+      <SectionHeader icon={MonitorPlay} label="Tech Stack" color={COLORS.sky} />
+
+      {/* Slide area */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 16,
+          minHeight: 0,
+        }}
+      >
+        {/* Placeholder image */}
+        <div
+          style={{
+            width: '100%',
+            aspectRatio: '16/9',
+            maxHeight: 200,
+            background: `linear-gradient(135deg,${COLORS.surface0},${COLORS.surface1})`,
+            borderRadius: 12,
+            border: `1px dashed rgba(255,255,255,.12)`,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            opacity: animating ? 0 : 1,
+            transform: animating ? 'translateY(8px)' : 'translateY(0)',
+            transition: 'opacity .3s ease, transform .3s ease',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Decorative gradient */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: `radial-gradient(ellipse 80% 60% at 50% 50%, rgba(137,180,250,.07), transparent)`,
+          }} />
+          <ImageIcon size={36} color={COLORS.overlay0} />
+          <div style={{ fontSize: '0.75rem', color: COLORS.overlay0, fontFamily: "'JetBrains Mono',monospace" }}>
+            image placeholder
+          </div>
+        </div>
+
+        {/* Slide label & tags */}
+        <div
+          style={{
+            textAlign: 'center',
+            opacity: animating ? 0 : 1,
+            transform: animating ? 'translateY(6px)' : 'translateY(0)',
+            transition: 'opacity .3s ease, transform .3s ease',
+          }}
+        >
+          <div style={{ fontSize: '0.98rem', fontWeight: 700, color: COLORS.text, marginBottom: 8 }}>
+            {slide.label}
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {slide.tags.map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontFamily: "'JetBrains Mono',monospace",
+                  fontSize: '1.05rem',
+                  padding: '6px 16px',
+                  borderRadius: 99,
+                  background: COLORS.surface0,
+                  color: COLORS.sky,
+                  border: `1px solid rgba(137,220,235,.2)`,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <TechLogo label={tag} size={22} />
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots */}
+        <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+          {STACK_SLIDES.map((_, i) => (
+            <div
+              key={i}
+              onClick={() => { setAnimating(true); setTimeout(() => { setCurrent(i); setAnimating(false); }, 300); }}
+              style={{
+                width: i === current ? 20 : 6,
+                height: 6,
+                borderRadius: 99,
+                background: i === current ? COLORS.sky : COLORS.surface2,
+                transition: 'all .3s ease',
+                cursor: 'pointer',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </Win>
+  );
+}
+
+// ─── Soft Skills Window ───────────────────────────────────────────────────────
+
+function SoftSkillsWin() {
+  return (
+    <Win title="soft-skills.md" delay={0.08} style={{ gridColumn: 2, gridRow: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <SectionHeader icon={Lightbulb} label="Soft Skills" color={COLORS.yellow} />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 7,
+          flex: 1,
+          overflowY: 'auto',
+          minHeight: 0,
+        }}
+      >
+        {SOFT_SKILLS.map(({ icon: Icon, label, desc, color }) => (
+          <div
+            key={label}
+            className="sk-hover"
+            style={{
+              background: COLORS.surface0,
+              borderRadius: 9,
+              padding: '9px 11px',
+              border: `1px solid rgba(255,255,255,.05)`,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+              cursor: 'default',
+              transition: 'all .2s ease',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = color; e.currentTarget.style.background = COLORS.surface1; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,.05)'; e.currentTarget.style.background = COLORS.surface0; }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <Icon size={14} color={color} />
+              <span style={{ fontSize: '0.82rem', fontWeight: 600, color: COLORS.text }}>{label}</span>
+            </div>
+            <div style={{ fontSize: '0.72rem', color: COLORS.subtext0, lineHeight: 1.5 }}>{desc}</div>
+          </div>
+        ))}
+      </div>
+    </Win>
+  );
+}
+
+// ─── Workspace2 ───────────────────────────────────────────────────────────────
 
 export function Workspace2(): React.ReactElement {
   return (
@@ -61,106 +781,27 @@ export function Workspace2(): React.ReactElement {
       style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gridTemplateRows: 'auto 1fr 1fr',
+        gridTemplateRows: '1fr 1fr 1fr',
         gap: 9,
         padding: 11,
         height: '100%',
-        background: `radial-gradient(ellipse 60% 50% at 80% 15%,rgba(148,226,213,.07) 0%,transparent 60%),
-                    radial-gradient(ellipse 50% 40% at 20% 85%,rgba(137,220,235,.05) 0%,transparent 60%),
-                    ${COLORS.base}`,
+        background: `
+          radial-gradient(ellipse 60% 50% at 75% 10%, rgba(137,180,250,.07) 0%, transparent 60%),
+          radial-gradient(ellipse 45% 40% at 20% 90%, rgba(203,166,247,.06) 0%, transparent 60%),
+          ${COLORS.base}
+        `,
       }}
     >
-      {/* Tech icons — full row */}
-      <Win title="tech-stack" delay={0} style={{ gridColumn: 'span 2' }}>
-        <SectionHeader icon={Cpu} label="Tools & Technologies" color={COLORS.teal} />
-        <div className="tech-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(8,1fr)', gap: 7 }}>
-          {TECHNOLOGIES.map(({ icon: Icon, label, ac }) => (
-            <div
-              key={label}
-              className="sk-hover"
-              style={{
-                background: COLORS.surface0,
-                border: `1px solid rgba(255,255,255,.06)`,
-                borderRadius: 10,
-                padding: '10px 7px',
-                textAlign: 'center',
-                transition: 'all .2s cubic-bezier(.34,1.56,.64,1)',
-                cursor: 'default',
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.borderColor = ac)}
-              onMouseOut={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,.06)')}
-            >
-              <Icon size={28} color={ac} style={{ margin: '0 auto 5px' }} />
-              <div style={{ fontSize: '0.79rem', color: COLORS.subtext1 }}>{label}</div>
-            </div>
-          ))}
-        </div>
-      </Win>
+      {/* Column 1 — Skill Domain Windows */}
+      <SkillDomainWin domain={DOMAIN_WEB} delay={0} row={1} />
+      <SkillDomainWin domain={DOMAIN_AI} delay={0.06} row={2} />
+      <SkillDomainWin domain={DOMAIN_DEVOPS} delay={0.12} row={3} />
 
-      {/* Bars */}
-      <Win title="proficiency.sh" delay={0.06} style={{ gridColumn: '1', gridRow: '2' }}>
-        <SectionHeader icon={Zap} label="Proficiency Level" color={COLORS.yellow} />
-        <div className="prof-container">
-          {SKILL_BARS.map(({ name, level, color }) => (
-            <div key={name} className="prof-item">
-              <div className="prof-bars">
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <div key={i} className="prof-bar" style={{ background: i < level ? color : "transparent" }} />
-                ))}
-              </div>
-              <span className="prof-title" style={{ color: COLORS.subtext1 }}>{name}</span>
-            </div>
-          ))}
-        </div>
-      </Win>
+      {/* Column 2 Row 1 — Soft Skills */}
+      <SoftSkillsWin />
 
-      {/* Timeline */}
-      <Win title="career.log" delay={0.1} style={{ gridColumn: '1', gridRow: '3' }}>
-        <SectionHeader icon={Briefcase} label="Work Experience" color={COLORS.peach} />
-        <div style={{ position: 'relative', paddingLeft: 28, direction: 'ltr', textAlign: 'left' }}>
-          <div
-            style={{
-              position: 'absolute',
-              left: 9,
-              top: 0,
-              bottom: 0,
-              width: 1,
-              background: `linear-gradient(to bottom,${COLORS.mauve},${COLORS.blue},transparent)`,
-            }}
-          />
-          {EXPERIENCE.map(({ role, co, date, dc, ds, desc }) => (
-            <div key={role + co} style={{ paddingBottom: 16, position: 'relative' }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: -24,
-                  top: 5,
-                  width: 12,
-                  height: 12,
-                  borderRadius: '50%',
-                  background: dc,
-                  border: `2px solid ${COLORS.mantle}`,
-                  boxShadow: `0 0 8px ${ds}`,
-                }}
-              />
-              <div style={{ fontSize: '0.99rem', fontWeight: 600, color: COLORS.text }}>{role}</div>
-              <div style={{ fontSize: '0.87rem', color: COLORS.blue, marginTop: 2 }}>{co}</div>
-              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: '0.79rem', color: COLORS.overlay1, marginTop: 2 }}>
-                {date}
-              </div>
-              <div style={{ fontSize: '0.87rem', color: COLORS.subtext0, lineHeight: 1.6, marginTop: 5 }}>{desc}</div>
-            </div>
-          ))}
-        </div>
-      </Win>
-
-      {/* Future Module Placeholder */}
-      <Win title="upcoming.module" delay={0.15} style={{ gridColumn: '2', gridRow: '2 / 4' }}>
-        <SectionHeader icon={Code} label="Future Workspace" color={COLORS.pink} />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80%', color: COLORS.overlay0, fontStyle: 'italic', border: `1px dashed ${COLORS.surface1}`, borderRadius: 8, marginTop: 10 }}>
-          واجهة للعمل عليها لاحقاً
-        </div>
-      </Win>
+      {/* Column 2 Rows 2–3 — Tech Stack Slideshow */}
+      <TechStackSlideshow />
     </div>
   );
 }

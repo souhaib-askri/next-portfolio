@@ -9,9 +9,11 @@ interface WinProps {
   style?: CSSProperties;
   delay?: number;
   className?: string;
+  bodyStyle?: CSSProperties;
+  scroll?: boolean;
 }
 
-export function Win({ title, children, style, delay = 0, className = '' }: WinProps): React.ReactElement {
+export function Win({ title, children, style, delay = 0, className = '', bodyStyle, scroll = true }: WinProps): React.ReactElement {
   return (
     <div
       className={`win-anim ${className}`}
@@ -81,7 +83,15 @@ export function Win({ title, children, style, delay = 0, className = '' }: WinPr
         </span>
       </div>
       {/* Body */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: 28, minHeight: 0 }}>
+      <div
+        style={{
+          flex: 1,
+          overflowY: scroll ? 'auto' : 'hidden',
+          padding: 28,
+          minHeight: 0,
+          ...bodyStyle,
+        }}
+      >
         {children}
       </div>
     </div>
