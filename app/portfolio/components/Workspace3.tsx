@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Rocket, ExternalLink, X, GitBranch, LayoutGrid,
-  Layers, Cpu, CheckCircle2, Clock3, Star, FolderGit2
+  Layers, CheckCircle2, Clock3, Star, FolderGit2,
+  Activity, Terminal, Code2, Cpu, ArrowUpRight
 } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
@@ -16,112 +17,147 @@ import smallProjectsData from '@/data/small_projects.json';
 type AnyProject = (typeof projectsData)[0] | (typeof smallProjectsData)[0];
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
-const TECH_COLORS = [
-  `${COLORS.mauve},${COLORS.blue}`,
-  `${COLORS.blue},${COLORS.teal}`,
-  `${COLORS.green},${COLORS.sapphire}`,
-  `${COLORS.peach},${COLORS.yellow}`,
-  `${COLORS.pink},${COLORS.mauve}`,
+const THEME_COLORS = [
+  COLORS.mauve,
+  COLORS.blue,
+  COLORS.peach,
+  COLORS.teal,
+  COLORS.green,
+  COLORS.yellow,
 ];
 
 const EMOJI: Record<string, string> = {
-  'plan-ai': '🧠',
-  'bluff-arena': '🃏',
-  'productivity-launcher': '📱',
+  'plan-ai': '🧠', 'bluff-arena': '🃏', 'productivity-launcher': '📱',
 };
 
-const LOGO_BASE_URL = '/logos/tech';
-const matchLogo = (techName: string) => {
-  const norm = techName.toLowerCase();
-  if (norm.includes('react')) return 'react.svg';
-  if (norm.includes('next')) return 'nextjs.svg';
-  if (norm.includes('node')) return 'nodejs.svg';
-  if (norm.includes('nest')) return 'nestjs.svg';
-  if (norm.includes('typescript')) return 'typescript.svg';
-  if (norm.includes('python')) return 'python.svg';
-  if (norm.includes('fastapi')) return 'fastapi.svg';
-  if (norm.includes('flask')) return 'flask.svg';
-  if (norm.includes('pandas')) return 'pandas.svg';
-  if (norm.includes('numpy')) return 'numpy.svg';
-  if (norm.includes('postgres')) return 'postgresql.svg';
-  if (norm.includes('docker')) return 'docker.svg';
-  if (norm.includes('compose')) return 'docker.svg';
-  if (norm.includes('kotlin')) return 'kotlin.svg';
-  if (norm.includes('jetpack')) return 'jetpackcompose.svg';
-  if (norm.includes('langchain')) return 'langchain.svg';
-  if (norm.includes('huggingface')) return 'huggingface.svg';
-  if (norm.includes('vercel')) return 'vercel.svg';
-  if (norm.includes('jupyter')) return 'jupyter.svg';
-  if (norm.includes('scikit')) return 'scikitlearn.svg';
-  if (norm.includes('streamlit')) return 'streamlit.svg';
-  if (norm.includes('action')) return 'githubactions.svg';
+const LOGO_BASE = '/logos/tech';
+const matchLogo = (t: string) => {
+  const n = t.toLowerCase();
+  if (n.includes('react')) return 'react.svg';
+  if (n.includes('next')) return 'nextjs.svg';
+  if (n.includes('node')) return 'nodejs.svg';
+  if (n.includes('nest')) return 'nestjs.svg';
+  if (n.includes('typescript')) return 'typescript.svg';
+  if (n.includes('python')) return 'python.svg';
+  if (n.includes('fastapi')) return 'fastapi.svg';
+  if (n.includes('flask')) return 'flask.svg';
+  if (n.includes('pandas')) return 'pandas.svg';
+  if (n.includes('numpy')) return 'numpy.svg';
+  if (n.includes('postgres')) return 'postgresql.svg';
+  if (n.includes('docker')) return 'docker.svg';
+  if (n.includes('compose')) return 'docker.svg';
+  if (n.includes('kotlin')) return 'kotlin.svg';
+  if (n.includes('jetpack')) return 'jetpackcompose.svg';
+  if (n.includes('langchain')) return 'langchain.svg';
+  if (n.includes('huggingface')) return 'huggingface.svg';
+  if (n.includes('vercel')) return 'vercel.svg';
+  if (n.includes('jupyter')) return 'jupyter.svg';
+  if (n.includes('scikit')) return 'scikitlearn.svg';
+  if (n.includes('streamlit')) return 'streamlit.svg';
+  if (n.includes('action')) return 'githubactions.svg';
   return null;
 };
 
-const renderTechLogos = (techs: string[], max: number = 4) => {
-  const uniqueLogos = new Set<string>();
-  const logosToRender: string[] = [];
-  
+const renderLogos = (techs: string[], max = 4) => {
+  const seen = new Set<string>();
+  const logos: string[] = [];
   for (const t of techs) {
-    const filename = matchLogo(t);
-    if (filename && !uniqueLogos.has(filename)) {
-      uniqueLogos.add(filename);
-      logosToRender.push(filename);
-    }
+    const f = matchLogo(t);
+    if (f && !seen.has(f)) { seen.add(f); logos.push(f); }
   }
-
-  const trimmed = logosToRender.slice(0, max);
-  const diff = logosToRender.length - max;
-
-  if (trimmed.length === 0) return null;
-
+  const trimmed = logos.slice(0, max);
+  const diff = logos.length - max;
+  if (!trimmed.length) return null;
   return (
     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-      {trimmed.map(logo => (
-        <img key={logo} src={`${LOGO_BASE_URL}/${logo}`} alt="tech" style={{ width: 18, height: 18, objectFit: 'contain' }} />
+      {trimmed.map(l => (
+        <img key={l} src={`${LOGO_BASE}/${l}`} alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} />
       ))}
-      {diff > 0 && (
-        <span style={{ fontSize: '0.65rem', color: COLORS.overlay0, fontWeight: 700, marginLeft: 2 }}>
-          +{diff}
-        </span>
-      )}
+      {diff > 0 && <span style={{ fontSize: '0.65rem', color: COLORS.overlay0, fontWeight: 700 }}>+{diff}</span>}
+    </div>
+  );
+};
+
+// ─── Project Stats (terminal style like WS1 neofetch) ─────────────────────
+function ProjectStats() {
+  const total = projectsData.length + smallProjectsData.length;
+  const done = projectsData.filter(p => !p.status.includes('Development')).length;
+  const inProg = projectsData.filter(p => p.status.includes('Development')).length;
+  const allTechs = new Set<string>();
+  projectsData.forEach(p => Object.values(p.technologies).flat().forEach(t => allTechs.add(t)));
+  smallProjectsData.forEach(p => p.technologies.forEach(t => allTechs.add(t)));
+
+  const stats = [
+    { label: 'Total Projects', val: `${total}`, color: COLORS.mauve },
+    { label: 'Featured', val: `${projectsData.length}`, color: COLORS.blue },
+    { label: 'Mini Tools', val: `${smallProjectsData.length}`, color: COLORS.teal },
+    { label: 'Completed', val: `${done}`, color: COLORS.green },
+    { label: 'In Progress', val: `${inProg}`, color: COLORS.yellow },
+    { label: 'Technologies', val: `${allTechs.size}+`, color: COLORS.peach },
+  ];
+
+  return (
+    <div style={{
+      background: COLORS.crust, borderRadius: '0 0 12px 12px', padding: '18px 16px',
+      fontFamily: "'JetBrains Mono',monospace", fontSize: '0.85rem', height: '100%',
+      display: 'flex', flexDirection: 'column', gap: 14,
+    }}>
+      <div style={{ color: COLORS.text, marginBottom: 4 }}>
+        <span style={{ color: COLORS.green }}>souhaieb@projects</span>
+        <span style={{ color: COLORS.overlay0 }}>:~$&nbsp;</span>
+        project-stats --summary
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, flex: 1 }}>
+        {stats.map(s => (
+          <div key={s.label} className="stat-card" style={{
+            background: COLORS.surface0, borderRadius: 12, padding: '14px 12px',
+            border: `1px solid rgba(255,255,255,.04)`, transition: 'transform .2s',
+            display: 'flex', flexDirection: 'column', gap: 4,
+          }}>
+            <span style={{ fontSize: '1.6rem', fontWeight: 800, color: s.color, lineHeight: 1,
+              textShadow: `0 0 12px ${s.color}44` }}>{s.val}</span>
+            <span style={{ fontSize: '0.68rem', color: COLORS.overlay1, textTransform: 'uppercase',
+              letterSpacing: '.08em', fontWeight: 600 }}>{s.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Activity bar */}
+      <div style={{ background: COLORS.surface0, borderRadius: 10, padding: '12px', border: `1px solid rgba(255,255,255,.04)` }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+          <Activity size={13} color={COLORS.green} />
+          <span style={{ fontSize: '0.7rem', color: COLORS.green, fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase' }}>Project Timeline</span>
+        </div>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', height: 32 }}>
+          {[0.3, 0.5, 0.7, 1, 0.8, 0.6, 0.9, 0.4, 0.7, 1, 0.5, 0.8].map((h, i) => (
+            <div key={i} className="bar-fill" style={{
+              flex: 1, height: `${h * 100}%`, borderRadius: 3,
+              background: COLORS.blue,
+              opacity: 0.6 + h * 0.4, animationDelay: `${i * 0.08}s`,
+            }} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
-function ProjectModal({
-  project,
-  onClose,
-  gradient,
-}: {
-  project: AnyProject;
-  onClose: () => void;
-  gradient: string;
-}) {
+function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; onClose: () => void; themeColor: string }) {
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
     setMounted(true);
-    const handler = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    const h = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handler);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handler);
-    };
+    window.addEventListener('keydown', h);
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', h); };
   }, [onClose]);
 
-  const featured = 'features' in project || 'highlights' in project;
-  const bullets: string[] =
-    ('features' in project && project.features) ||
-    ('highlights' in project && project.highlights) ||
-    [];
-
+  const bullets: string[] = ('features' in project && project.features) || ('highlights' in project && project.highlights) || [];
   const techObj = 'technologies' in project ? project.technologies : null;
-  const techCategories = techObj && typeof techObj === 'object' && !Array.isArray(techObj) ? (techObj as Record<string, string[]>) : null;
+  const techCats = techObj && typeof techObj === 'object' && !Array.isArray(techObj) ? (techObj as unknown as Record<string, string[]>) : null;
   const techFlat: string[] = Array.isArray(techObj) ? (techObj as string[]) : [];
-
   const isDone = 'status' in project && typeof project.status === 'string' && !project.status.includes('Development');
   const github = 'github' in project && project.github ? project.github : null;
   const subtitle = 'subtitle' in project && project.subtitle ? project.subtitle : null;
@@ -129,72 +165,45 @@ function ProjectModal({
 
   if (!mounted) return null;
 
-  const modalContent = (
-    <div
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(10px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '24px 16px', animation: 'fadeIn .25s ease',
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          background: COLORS.mantle,
-          border: `1px solid rgba(255,255,255,.05)`,
-          borderRadius: 24,
-          width: '100%', maxWidth: 780, maxHeight: '85vh',
-          display: 'flex', flexDirection: 'column', overflow: 'hidden',
-          boxShadow: '0 32px 80px rgba(0,0,0,.6)',
-          animation: 'slideUp .35s cubic-bezier(.34,1.56,.64,1)',
-          position: 'relative',
-        }}
-      >
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${gradient})` }} />
-        
-        {/* Header content area GNOME Style */}
-        <div style={{ 
-          padding: '32px 32px 24px', 
-          borderBottom: `1px solid rgba(255,255,255,.06)`, 
+  return createPortal(
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.65)',
+      backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px 16px', animation: 'fadeIn .25s ease',
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        background: COLORS.mantle, border: `1px solid rgba(255,255,255,.05)`, borderRadius: 24,
+        width: '100%', maxWidth: 780, maxHeight: '85vh', display: 'flex', flexDirection: 'column',
+        overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6)',
+        animation: 'slideUp .35s cubic-bezier(.34,1.56,.64,1)', position: 'relative',
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: themeColor }} />
+
+        <div style={{
+          padding: '32px 32px 24px', borderBottom: `1px solid rgba(255,255,255,.06)`,
           display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
-          background: `radial-gradient(100% 100% at 50% 0%, ${gradient.split(',')[0]}15 0%, transparent 100%)`
+          background: `radial-gradient(100% 100% at 50% 0%, ${themeColor}15 0%, transparent 100%)`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-            <div style={{
-              fontSize: 42, width: 64, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: COLORS.surface0, borderRadius: 16, border: `1px solid rgba(255,255,255,.08)`,
-              boxShadow: '0 8px 16px rgba(0,0,0,.2)'
-            }}>
+            <div style={{ fontSize: 42, width: 64, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: COLORS.surface0, borderRadius: 16, border: `1px solid rgba(255,255,255,.08)`, boxShadow: '0 8px 16px rgba(0,0,0,.2)' }}>
               {em}
             </div>
             <div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: COLORS.text, marginBottom: 4, letterSpacing: '-0.02em' }}>
-                {project.title}
-              </div>
+              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: COLORS.text, marginBottom: 4, letterSpacing: '-0.02em' }}>{project.title}</div>
               {subtitle && <div style={{ fontSize: '0.9rem', color: COLORS.subtext0, fontWeight: 500 }}>{subtitle}</div>}
             </div>
           </div>
-
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
-            <button
-              onClick={onClose}
-              style={{
-                background: COLORS.surface0, border: `1px solid rgba(255,255,255,.08)`, borderRadius: 99,
-                color: COLORS.overlay1, width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', transition: 'all .15s',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = COLORS.surface1; e.currentTarget.style.color = COLORS.text; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = COLORS.surface0; e.currentTarget.style.color = COLORS.overlay1; }}
-            >
-              <X size={16} />
-            </button>
+            <button onClick={onClose} style={{
+              background: COLORS.surface0, border: `1px solid rgba(255,255,255,.08)`, borderRadius: 99,
+              color: COLORS.overlay1, width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+            }}><X size={16} /></button>
             {'status' in project && (
               <span style={{
                 display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.75rem', fontWeight: 600,
                 padding: '4px 12px', borderRadius: 99,
-                background: isDone ? `rgba(166,227,161,.12)` : `rgba(249,226,175,.12)`,
+                background: isDone ? 'rgba(166,227,161,.12)' : 'rgba(249,226,175,.12)',
                 color: isDone ? COLORS.green : COLORS.yellow,
                 border: `1px solid ${isDone ? COLORS.green : COLORS.yellow}33`,
               }}>
@@ -205,25 +214,17 @@ function ProjectModal({
           </div>
         </div>
 
-        {/* Scrollable body */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: 24, background: COLORS.base }}>
-          {/* Description */}
           <div style={{ background: COLORS.surface0, padding: 20, borderRadius: 16, border: `1px solid rgba(255,255,255,.03)` }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: COLORS.mauve, letterSpacing: '.05em', marginBottom: 10, textTransform: 'uppercase' }}>
-              About this project
-            </div>
-            <p style={{ fontSize: '0.92rem', color: COLORS.subtext1, lineHeight: 1.6, margin: 0 }}>
-              {project.description}
-            </p>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: COLORS.mauve, letterSpacing: '.05em', marginBottom: 10, textTransform: 'uppercase' }}>About this project</div>
+            <p style={{ fontSize: '0.92rem', color: COLORS.subtext1, lineHeight: 1.6, margin: 0 }}>{project.description}</p>
           </div>
 
-          {/* Details Row */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-            {/* Features / Highlights */}
             {bullets.length > 0 && (
               <div style={{ background: COLORS.surface0, padding: 20, borderRadius: 16, border: `1px solid rgba(255,255,255,.03)` }}>
                 <div style={{ fontSize: '0.8rem', fontWeight: 700, color: COLORS.peach, letterSpacing: '.05em', marginBottom: 14, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Star size={14} /> {featured && 'features' in project ? 'Key Features' : 'Highlights'}
+                  <Star size={14} /> {'features' in project ? 'Key Features' : 'Highlights'}
                 </div>
                 <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {bullets.map((b: string, i: number) => (
@@ -236,30 +237,22 @@ function ProjectModal({
               </div>
             )}
 
-            {/* Technologies */}
             <div style={{ background: COLORS.surface0, padding: 20, borderRadius: 16, border: `1px solid rgba(255,255,255,.03)` }}>
               <div style={{ fontSize: '0.8rem', fontWeight: 700, color: COLORS.teal, letterSpacing: '.05em', marginBottom: 14, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <Layers size={14} /> Tech Stack
               </div>
-              
-              {techCategories ? (
+              {techCats ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  {Object.entries(techCategories).map(([cat, techs]) => (
+                  {Object.entries(techCats).map(([cat, techs]) => (
                     <div key={cat}>
-                      <div style={{ fontSize: '0.75rem', color: COLORS.overlay1, fontWeight: 700, marginBottom: 8, textTransform: 'capitalize' }}>
-                        {cat}
-                      </div>
+                      <div style={{ fontSize: '0.75rem', color: COLORS.overlay1, fontWeight: 700, marginBottom: 8, textTransform: 'capitalize' }}>{cat}</div>
                       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         {techs.map((t: string) => {
                           const logo = matchLogo(t);
                           return (
-                            <span key={t} style={{
-                              display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 500,
-                              padding: '4px 12px', borderRadius: 8, background: COLORS.surface1, color: COLORS.text,
-                              border: `1px solid rgba(255,255,255,.04)`,
-                            }}>
-                              {logo && <img src={`${LOGO_BASE_URL}/${logo}`} alt="logo" style={{ width: 14, height: 14 }} />}
-                              {t}
+                            <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 500,
+                              padding: '4px 12px', borderRadius: 8, background: COLORS.surface1, color: COLORS.text, border: `1px solid rgba(255,255,255,.04)` }}>
+                              {logo && <img src={`${LOGO_BASE}/${logo}`} alt="" style={{ width: 14, height: 14 }} />}{t}
                             </span>
                           );
                         })}
@@ -272,13 +265,9 @@ function ProjectModal({
                   {techFlat.map((t: string) => {
                     const logo = matchLogo(t);
                     return (
-                      <span key={t} style={{
-                        display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 500,
-                        padding: '4px 12px', borderRadius: 8, background: COLORS.surface1, color: COLORS.text,
-                        border: `1px solid rgba(255,255,255,.04)`,
-                      }}>
-                        {logo && <img src={`${LOGO_BASE_URL}/${logo}`} alt="logo" style={{ width: 14, height: 14 }} />}
-                        {t}
+                      <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 500,
+                        padding: '4px 12px', borderRadius: 8, background: COLORS.surface1, color: COLORS.text, border: `1px solid rgba(255,255,255,.04)` }}>
+                        {logo && <img src={`${LOGO_BASE}/${logo}`} alt="" style={{ width: 14, height: 14 }} />}{t}
                       </span>
                     );
                   })}
@@ -288,153 +277,158 @@ function ProjectModal({
           </div>
         </div>
 
-        {/* Footer — actions */}
         {github && (
           <div style={{ padding: '16px 32px', borderTop: `1px solid rgba(255,255,255,.06)`, background: COLORS.mantle, display: 'flex', justifyContent: 'flex-end' }}>
-            <a
-              href={github} target="_blank" rel="noreferrer"
-              style={{
-                display: 'flex', alignItems: 'center', gap: 8, padding: '10px 24px', background: COLORS.surface0,
-                borderRadius: 12, color: COLORS.text, textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem',
-                border: `1px solid rgba(255,255,255,.08)`, transition: 'all .2s'
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = COLORS.surface1; e.currentTarget.style.borderColor = `rgba(255,255,255,.2)`; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = COLORS.surface0; e.currentTarget.style.borderColor = `rgba(255,255,255,.08)`; }}
-            >
-              <GitBranch size={18} /> Source Code
-            </a>
+            <a href={github} target="_blank" rel="noreferrer" style={{
+              display: 'flex', alignItems: 'center', gap: 8, padding: '10px 24px', background: COLORS.surface0,
+              borderRadius: 12, color: COLORS.text, textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem',
+              border: `1px solid rgba(255,255,255,.08)`, transition: 'all .2s',
+            }}><GitBranch size={18} /> Source Code</a>
           </div>
         )}
       </div>
-
       <style>{`
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes slideUp { from{transform:translateY(30px) scale(.97); opacity:0} to{transform:translateY(0) scale(1); opacity:1} }
       `}</style>
+    </div>,
+    document.body
+  );
+}
+
+// ─── Featured Project Card ────────────────────────────────────────────────────
+function FeaturedCard({ project, themeColor, index, onClick }: {
+  project: typeof projectsData[0]; themeColor: string; index: number; onClick: () => void;
+}) {
+  const em = EMOJI[project.id] || '📦';
+  const desc = project.description.length > 100 ? project.description.slice(0, 100) + '...' : project.description;
+  const allTechs = Object.values(project.technologies).flat() as string[];
+  const isDone = !project.status.includes('Development');
+
+  return (
+    <div onClick={onClick} className="proj-hover" style={{
+      background: COLORS.surface0, border: `1px solid rgba(255,255,255,.04)`, borderRadius: 16,
+      cursor: 'pointer', position: 'relative', overflow: 'hidden', transition: 'all .25s ease',
+      display: 'flex', flexDirection: 'column', boxShadow: '0 4px 12px rgba(0,0,0,.15)',
+    }}>
+      {/* Solid color header band */}
+      <div style={{
+        height: 56, background: themeColor, position: 'relative',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{
+            fontSize: 24, width: 38, height: 38, borderRadius: 10,
+            background: 'rgba(0,0,0,.25)', backdropFilter: 'blur(8px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>{em}</div>
+          <span style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.01em',
+            textShadow: '0 1px 4px rgba(0,0,0,.3)' }}>{project.title}</span>
+        </div>
+        <span style={{
+          fontSize: '0.65rem', fontWeight: 700, padding: '3px 10px', borderRadius: 99,
+          background: isDone ? 'rgba(166,227,161,.25)' : 'rgba(249,226,175,.25)',
+          color: '#fff', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,.15)',
+          display: 'flex', alignItems: 'center', gap: 4,
+        }}>
+          {isDone ? <CheckCircle2 size={10} /> : <Clock3 size={10} />}
+          {isDone ? 'Done' : 'Active'}
+        </span>
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: '14px 16px', flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {'subtitle' in project && project.subtitle && (
+          <div style={{ fontSize: '0.78rem', color: COLORS.overlay1, fontWeight: 500 }}>{project.subtitle}</div>
+        )}
+        <div style={{ fontSize: '0.84rem', color: COLORS.subtext0, lineHeight: 1.55, flex: 1 }}>{desc}</div>
+
+        {/* Tech logos row */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, borderTop: `1px solid rgba(255,255,255,.04)` }}>
+          <div style={{ background: COLORS.mantle, padding: '5px 10px', borderRadius: 99, border: `1px solid rgba(255,255,255,.04)` }}>
+            {renderLogos(allTechs, 4)}
+          </div>
+          <span style={{ fontSize: '0.75rem', color: COLORS.overlay1, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+            Details <ArrowUpRight size={12} />
+          </span>
+        </div>
+      </div>
     </div>
   );
+}
 
-  return createPortal(modalContent, document.body);
+// ─── Mini Tool Card ───────────────────────────────────────────────────────────
+function MiniToolCard({ project, themeColor, onClick }: {
+  project: typeof smallProjectsData[0]; themeColor: string; onClick: () => void;
+}) {
+  return (
+    <div onClick={onClick} className="monitor-row" style={{
+      background: COLORS.surface0, border: `1px solid rgba(255,255,255,.03)`, borderRadius: 10,
+      padding: '12px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12,
+    }}>
+      <div style={{
+        width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+        background: themeColor, opacity: 0.85,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Code2 size={16} color="#111" />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: '0.88rem', fontWeight: 700, color: COLORS.text, marginBottom: 2 }}>{project.title}</div>
+        <div style={{ fontSize: '0.75rem', color: COLORS.subtext0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {project.description}
+        </div>
+      </div>
+      <div style={{ flexShrink: 0 }}>{renderLogos(project.technologies, 2)}</div>
+    </div>
+  );
 }
 
 // ─── Workspace3 ───────────────────────────────────────────────────────────────
 export function Workspace3(): React.ReactElement {
-  const [modal, setModal] = useState<{ project: AnyProject; gradient: string; } | null>(null);
-
-  const openModal = (project: AnyProject, gradient: string) => setModal({ project, gradient });
-  const closeModal = () => setModal(null);
+  const [modal, setModal] = useState<{ project: AnyProject; themeColor: string } | null>(null);
 
   return (
     <>
       <div className="ws-grid" style={{
-        display: 'flex', flexDirection: 'column', height: '100%', gap: 12, padding: 12,
-        background: `radial-gradient(circle at 50% 0%, rgba(203,166,247,.04) 0%, transparent 60%), ${COLORS.base}`,
+        display: 'grid', gridTemplateColumns: '7fr 4fr', gridTemplateRows: '1fr 1fr',
+        gap: 9, padding: 11, height: '100%',
+        background: `radial-gradient(ellipse 60% 50% at 30% 20%, rgba(203,166,247,.06) 0%, transparent 60%),
+                     radial-gradient(ellipse 50% 40% at 80% 80%, rgba(137,180,250,.05) 0%, transparent 60%),
+                     ${COLORS.base}`,
       }}>
-        <Win title="App Center / Portfolio" delay={0} style={{ flex: 1, display: 'flex', flexDirection: 'column' }} bodyStyle={{ padding: '24px' }}>
-          
-          <SectionHeader icon={LayoutGrid} label="Featured Applications" color={COLORS.mauve} />
-          
+        {/* Col 1: Featured Projects — spans 2 rows */}
+        <Win title="App Center / Featured Projects" delay={0} style={{ gridRow: '1 / 3', display: 'flex', flexDirection: 'column' }}>
+          <SectionHeader icon={Rocket} label="Featured Applications" color={COLORS.mauve} />
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: 16,
-            marginBottom: 32,
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: 14, flex: 1,
           }}>
-            {projectsData.map((p, i) => {
-              const ag = TECH_COLORS[i % TECH_COLORS.length];
-              const em = EMOJI[p.id] || '📦';
-              const desc = p.description.length > 90 ? p.description.slice(0, 90) + '...' : p.description;
-              const allTechs = Object.values(p.technologies).flat() as string[];
-              
-              return (
-                <div
-                  key={p.id}
-                  onClick={() => openModal(p, ag)}
-                  style={{
-                    background: COLORS.surface0, border: `1px solid rgba(255,255,255,.04)`, borderRadius: 20,
-                    padding: 20, cursor: 'pointer', position: 'relative', overflow: 'hidden',
-                    display: 'flex', flexDirection: 'column', transition: 'all .25s ease',
-                    boxShadow: '0 4px 12px rgba(0,0,0,.1)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = COLORS.surface1;
-                    e.currentTarget.style.transform = 'translateY(-3px)';
-                    e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,.2)';
-                    e.currentTarget.style.borderColor = `rgba(255,255,255,.08)`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = COLORS.surface0;
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,.1)';
-                    e.currentTarget.style.borderColor = `rgba(255,255,255,.04)`;
-                  }}
-                >
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg,${ag})` }} />
-                  
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-                    <div style={{ fontSize: 32, background: COLORS.crust, width: 54, height: 54, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,.2)' }}>
-                      {em}
-                    </div>
-                    {/* logos */}
-                    <div style={{ background: COLORS.mantle, padding: '6px 10px', borderRadius: 99, border: `1px solid rgba(255,255,255,.04)` }}>
-                      {renderTechLogos(allTechs, 3)}
-                    </div>
-                  </div>
-                  
-                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: COLORS.text, marginBottom: 6, letterSpacing: '-0.02em' }}>
-                    {p.title}
-                  </div>
-                  <div style={{ fontSize: '0.85rem', color: COLORS.subtext0, lineHeight: 1.5, flex: 1, marginBottom: 12 }}>
-                    {desc}
-                  </div>
-                  
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 12, borderTop: `1px dashed rgba(255,255,255,.04)` }}>
-                    <span style={{ fontSize: '0.8rem', color: COLORS.overlay1, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
-                       Explore Details <ExternalLink size={14} />
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+            {projectsData.map((p, i) => (
+              <FeaturedCard key={p.id} project={p} themeColor={THEME_COLORS[i % THEME_COLORS.length]}
+                index={i} onClick={() => setModal({ project: p, themeColor: THEME_COLORS[i % THEME_COLORS.length] })} />
+            ))}
           </div>
+        </Win>
 
+        {/* Col 2, Row 1: Stats Terminal */}
+        <Win title="project-stats" delay={0.08} bodyStyle={{ padding: 0 }}>
+          <ProjectStats />
+        </Win>
+
+        {/* Col 2, Row 2: Mini Tools */}
+        <Win title="mini-tools.list" delay={0.14}>
           <SectionHeader icon={FolderGit2} label="Mini Tools & Scripts" color={COLORS.teal} />
-          
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: 12,
-          }}>
-            {smallProjectsData.map((sp, i) => {
-              const ag = TECH_COLORS[(i+2) % TECH_COLORS.length];
-              return (
-                <div
-                  key={sp.id}
-                  onClick={() => openModal(sp, ag)}
-                  style={{
-                    background: COLORS.surface0, border: `1px solid rgba(255,255,255,.03)`, borderRadius: 16,
-                    padding: '16px', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column',
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = COLORS.surface1; e.currentTarget.style.transform = 'scale(1.02)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = COLORS.surface0; e.currentTarget.style.transform = 'scale(1)'; }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <div style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.text, letterSpacing: '-0.01em' }}>
-                      {sp.title}
-                    </div>
-                    {renderTechLogos(sp.technologies, 2)}
-                  </div>
-                  <div style={{ fontSize: '0.82rem', color: COLORS.subtext0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.5 }}>
-                    {sp.description}
-                  </div>
-                </div>
-              )
-            })}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {smallProjectsData.map((sp, i) => (
+              <MiniToolCard key={sp.id} project={sp} themeColor={THEME_COLORS[(i + 1) % THEME_COLORS.length]}
+                onClick={() => setModal({ project: sp, themeColor: THEME_COLORS[(i + 1) % THEME_COLORS.length] })} />
+            ))}
           </div>
         </Win>
       </div>
 
-      {modal && <ProjectModal project={modal.project} gradient={modal.gradient} onClose={closeModal} />}
+      {modal && <ProjectModal project={modal.project} themeColor={modal.themeColor} onClose={() => setModal(null)} />}
     </>
   );
 }

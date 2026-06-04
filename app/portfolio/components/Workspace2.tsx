@@ -495,7 +495,6 @@ function SkillDomainWin({ domain, delay, row }: { domain: DomainData; delay: num
       <Win
         title={`${domain.id}.skills`}
         delay={delay}
-        scroll={false}
         style={{ gridColumn: 1, gridRow: row, display: 'flex', flexDirection: 'column', minHeight: 0 }}
       >
         {/* Header */}
