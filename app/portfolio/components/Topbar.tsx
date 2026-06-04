@@ -1,25 +1,27 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { LucideIcon, Volume2, Wifi, Battery, Download, Sun, Moon } from 'lucide-react';
+import { Volume2, Wifi, Battery, Download, Sun, Moon } from 'lucide-react';
 import { COLORS, Workspace } from '../constants';
 
 interface TopbarProps {
   current: number;
   onWorkspaceChange: (id: number) => void;
   workspaces: Workspace[];
-  time: string;
-  date: string;
 }
 
-export function Topbar({ current, onWorkspaceChange, workspaces, time, date }: TopbarProps): React.ReactElement {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+export function Topbar({ current, onWorkspaceChange, workspaces }: TopbarProps): React.ReactElement {
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('portfolio-theme') as 'dark' | 'light';
+      return savedTheme || 'dark';
+    }
+    return 'dark';
+  });
 
   useEffect(() => {
-    // Check saved theme or system preference on load
     const savedTheme = localStorage.getItem('portfolio-theme') as 'dark' | 'light';
     if (savedTheme) {
-      setTheme(savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
     }
   }, []);

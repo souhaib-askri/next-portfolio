@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  Rocket, ExternalLink, X, GitBranch, LayoutGrid,
+  Rocket, X, GitBranch,
   Layers, CheckCircle2, Clock3, Star, FolderGit2,
-  Activity, Terminal, Code2, Cpu, ArrowUpRight
+  Activity, Code2, ArrowUpRight
 } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
@@ -147,6 +147,7 @@ function ProjectStats() {
 function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; onClose: () => void; themeColor: string }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const h = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.body.style.overflow = 'hidden';
@@ -297,8 +298,8 @@ function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; o
 }
 
 // ─── Featured Project Card ────────────────────────────────────────────────────
-function FeaturedCard({ project, themeColor, index, onClick }: {
-  project: typeof projectsData[0]; themeColor: string; index: number; onClick: () => void;
+function FeaturedCard({ project, themeColor, onClick }: {
+  project: typeof projectsData[0]; themeColor: string; onClick: () => void;
 }) {
   const em = EMOJI[project.id] || '📦';
   const desc = project.description.length > 100 ? project.description.slice(0, 100) + '...' : project.description;
@@ -406,7 +407,7 @@ export function Workspace3(): React.ReactElement {
           }}>
             {projectsData.map((p, i) => (
               <FeaturedCard key={p.id} project={p} themeColor={THEME_COLORS[i % THEME_COLORS.length]}
-                index={i} onClick={() => setModal({ project: p, themeColor: THEME_COLORS[i % THEME_COLORS.length] })} />
+                onClick={() => setModal({ project: p, themeColor: THEME_COLORS[i % THEME_COLORS.length] })} />
             ))}
           </div>
         </Win>

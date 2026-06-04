@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { User, Layers, BrainCircuit, Terminal, Trophy, GraduationCap, Briefcase, Code2, Users } from 'lucide-react';
+import { Layers, BrainCircuit, Terminal, Trophy, GraduationCap, Briefcase, Code2, Users } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
 import personal from '@/data/personal.json';
@@ -9,17 +9,7 @@ import skills from '@/data/skills.json';
 import education from '@/data/education.json';
 import experience from '@/data/experience.json';
 
-// Key skills for tags display
-const KEY_SKILLS = [
-  { label: 'React / Next.js', accent: true },
-  { label: 'Node.js / NestJS', accent: true },
-  { label: 'Python / FastAPI', accent: true },
-  { label: 'Docker', accent: false },
-  { label: 'PostgreSQL', accent: false },
-  { label: 'LangChain / AI', accent: false },
-  { label: 'Kotlin', accent: false },
-  { label: 'TypeScript', accent: false },
-];
+
 
 // Tab data for system-monitor
 const TABS = [

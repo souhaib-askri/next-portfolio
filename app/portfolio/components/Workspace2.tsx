@@ -3,15 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  Globe, Database, Server, Brain, Container, Cpu, X,
-  ChevronRight, Layers, Lightbulb, Users, MessageSquare,
-  BookOpen, Rocket, Star, Code2, Zap, Heart, Image as ImageIcon,
+  Globe, Brain, Container, X,
+  ChevronRight, Lightbulb, Users, MessageSquare,
+  BookOpen, Rocket, Star, Zap, Heart, Image as ImageIcon,
   MonitorPlay
 } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
 import { SectionHeader } from './SectionHeader';
-import skills from '@/data/skills.json';
 
 // ─── Skill Domain Data ────────────────────────────────────────────────────────
 
@@ -290,6 +289,7 @@ function SkillModal({ domain, onClose }: { domain: DomainData; onClose: () => vo
   const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const handler = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', handler);
@@ -453,7 +453,7 @@ function SkillModal({ domain, onClose }: { domain: DomainData; onClose: () => vo
                 {cat}
               </div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {items.map((item) => (
+                {(items as string[]).map((item: string) => (
                   <span
                     key={item}
                     style={{

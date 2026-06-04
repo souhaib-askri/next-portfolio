@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Catppuccin Mocha Color Palette
 export const COLORS = {
   base:     "var(--base)",
@@ -30,7 +32,7 @@ export type ColorKey = keyof typeof COLORS;
 export interface Workspace {
   id: number;
   label: string;
-  icon: any;
+  icon: React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>;
   component: React.ComponentType;
 }
 
@@ -40,7 +42,7 @@ export interface Skill {
 }
 
 export interface Technology {
-  icon: any;
+  icon: React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>;
   label: string;
   ac: string;
 }
@@ -69,7 +71,7 @@ export interface Contribution {
 }
 
 export interface ContactLink {
-  icon: any;
+  icon: React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>;
   label: string;
   primary?: boolean;
 }
@@ -81,7 +83,7 @@ export interface FormData {
 }
 
 export interface Stat {
-  icon: any;
+  icon: React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>;
   label: string;
   val: string;
   col: string;

@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Home, Zap, Rocket, Radio } from 'lucide-react';
-import { COLORS, Workspace } from './constants';
-import { useClock } from './hooks';
+import { Workspace } from './constants';
 import { GlobalStyle } from './styles';
 import { Workspace1 } from './components/Workspace1';
 import { Workspace2 } from './components/Workspace2';
@@ -23,7 +22,6 @@ const WORKSPACES: Workspace[] = [
 export default function Portfolio(): React.ReactElement {
   const [current, setCurrent] = useState<number>(0);
   const [showNotif, setShowNotif] = useState<boolean>(true);
-  const { time, date } = useClock();
   const tx = useRef<number>(0);
 
   // Hide notification after 5s
@@ -63,7 +61,7 @@ export default function Portfolio(): React.ReactElement {
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <GlobalStyle />
-      <Topbar current={current} onWorkspaceChange={setCurrent} workspaces={WORKSPACES} time={time} date={date} />
+      <Topbar current={current} onWorkspaceChange={setCurrent} workspaces={WORKSPACES} />
       <Viewport current={current} workspaces={WORKSPACES} />
       <Notification show={showNotif} onClose={() => setShowNotif(false)} />
     </div>

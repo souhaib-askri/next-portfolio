@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Radio, Mail, GitBranch, Send, CheckCircle, ArrowLeft, BookOpen, FileText, Briefcase } from 'lucide-react';
-import { COLORS, ContactLink, FormData } from '../constants';
+import { Radio, Mail, GitBranch, Send, CheckCircle, ArrowLeft, Briefcase } from 'lucide-react';
+import { COLORS, FormData } from '../constants';
 import { Win } from './Win';
 import { SectionHeader } from './SectionHeader';
 
@@ -164,7 +164,7 @@ export function Workspace4(): React.ReactElement {
       <Win title="philosophy.txt" delay={0.12}>
         <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
           <div>
-            <div style={{ fontSize: '2.1rem', color: COLORS.mauve, marginBottom: 10, lineHeight: 1 }}>"</div>
+            <div style={{ fontSize: '2.1rem', color: COLORS.mauve, marginBottom: 10, lineHeight: 1 }}>{"\""}</div>
             <p
               style={{
                 fontSize: '1.04rem',
@@ -173,7 +173,7 @@ export function Workspace4(): React.ReactElement {
                 fontStyle: 'italic',
               }}
             >
-              Great software isn't just built, it's felt. Every line of code is an opportunity to create something beautiful that serves people.
+              {"Great software isn't just built, it's felt. Every line of code is an opportunity to create something beautiful that serves people."}
             </p>
             <div
               style={{

@@ -36,7 +36,7 @@ export function Notification({ show, onClose }: NotificationProps): React.ReactE
     >
       <span style={{ fontSize: 22 }}>🐧</span>
       <div>
-        <div style={{ fontWeight: 600, color: COLORS.text, fontSize: '0.95rem' }}>Welcome to {personal.name.split(' ')[0]}'s Portfolio!</div>
+        <div style={{ fontWeight: 600, color: COLORS.text, fontSize: '0.95rem' }}>Welcome to {personal.name.split(' ')[0]}&apos;s Portfolio!</div>
         <div style={{ color: COLORS.subtext0, fontSize: '0.82rem', marginTop: 1 }}>Use workspace names or ← → to navigate</div>
       </div>
       <button

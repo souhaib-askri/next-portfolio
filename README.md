@@ -1,4 +1,4 @@
-# Ahmed Al-Rashid's Portfolio
+# Souhaieb Askri's Portfolio
 
 A modern, interactive portfolio website built with **Next.js 16**, **React 19**, and **TypeScript**. Features a desktop-inspired UI with a Catppuccin Mocha color scheme and smooth animations.
 
@@ -206,7 +206,7 @@ Feel free to open issues and submit pull requests for any improvements.
 
 ## 👨‍💻 About
 
-Portfolio of Ahmed Al-Rashid, a full-stack developer passionate about building elegant digital experiences with a focus on open-source software and Linux ecosystems.
+Portfolio of Souhaieb Askri, a full-stack web developer and Master's student in Data Science passionate about building intelligent tools that combine software engineering and artificial intelligence, with a focus on optimized workflows, high-productivity developer tools, and Linux ecosystems.
 
 ---
 
