@@ -146,6 +146,11 @@ export function GlobalStyle(): React.ReactElement {
         50% { opacity: 0.4; }
       }
 
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
       .win-anim {
         animation: winIn 0.38s cubic-bezier(0.34,1.56,0.64,1) both;
       }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Layers, BrainCircuit, Terminal, Trophy, GraduationCap, Briefcase, Code2, Users } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
@@ -329,9 +330,12 @@ export function Workspace1(): React.ReactElement {
             }}>
               {/* Image — row 1 & 2, col 1 */}
               <div style={{ gridRow: '1 / 3', gridColumn: 1 }}>
-                <img
-                  src="/souhaieb.png"
+                <Image
+                  src="/souhaieb.webp"
                   alt="Souhaieb"
+                  width={460}
+                  height={460}
+                  priority
                   className="neo-img"
                   style={{
                     width: 460,

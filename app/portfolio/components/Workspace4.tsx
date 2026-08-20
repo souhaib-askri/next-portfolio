@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Radio, Mail, GitBranch, Send, CheckCircle, ArrowLeft, Briefcase } from 'lucide-react';
+import { Radio, Mail, GitBranch, Send, CheckCircle, ArrowLeft, Briefcase, Loader2, AlertCircle } from 'lucide-react';
 import { COLORS, FormData } from '../constants';
 import { Win } from './Win';
 import { SectionHeader } from './SectionHeader';
@@ -14,13 +14,66 @@ const CONTACT_LINKS = [
   { icon: Briefcase, label: 'LinkedIn', url: personal.linkedin },
 ];
 
+type FormStatus = 'idle' | 'loading' | 'success' | 'error';
+
 export function Workspace4(): React.ReactElement {
-  const [sent, setSent] = useState<boolean>(false);
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [form, setForm] = useState<FormData>({ name: '', email: '', msg: '' });
 
-  const handleSend = () => {
-    setSent(true);
-    setTimeout(() => setSent(false), 2500);
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (status === 'loading') return;
+
+    // Client-side validation
+    if (!form.name.trim()) {
+      setStatus('error');
+      setErrorMessage('Please enter your name.');
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email.trim() || !emailPattern.test(form.email.trim())) {
+      setStatus('error');
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    if (!form.msg.trim() || form.msg.trim().length < 5) {
+      setStatus('error');
+      setErrorMessage('Message must be at least 5 characters long.');
+      return;
+    }
+
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setStatus('error');
+        setErrorMessage(result.error || 'Failed to send message. Please try again later.');
+        return;
+      }
+
+      setStatus('success');
+      setForm({ name: '', email: '', msg: '' });
+
+      // Reset success state back to idle after 4 seconds
+      setTimeout(() => {
+        setStatus('idle');
+      }, 4000);
+    } catch {
+      setStatus('error');
+      setErrorMessage('Network error occurred. Please check your connection.');
+    }
   };
 
   return (
@@ -73,16 +126,21 @@ export function Workspace4(): React.ReactElement {
 
       {/* Contact form */}
       <Win title="compose — message" delay={0.07}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9, height: '100%' }}>
+        <form onSubmit={handleSend} style={{ display: 'flex', flexDirection: 'column', gap: 9, height: '100%' }}>
           {[
-            { key: 'name' as const, label: 'Name', ph: 'Your name', fc: COLORS.mauve },
-            { key: 'email' as const, label: 'Email', ph: 'email@example.com', fc: COLORS.blue },
-          ].map(({ key, label, ph, fc }) => (
+            { key: 'name' as const, label: 'Name', ph: 'Your name', fc: COLORS.mauve, type: 'text' },
+            { key: 'email' as const, label: 'Email', ph: 'email@example.com', fc: COLORS.blue, type: 'email' },
+          ].map(({ key, label, ph, fc, type }) => (
             <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
               <label style={{ fontSize: '0.84rem', color: COLORS.subtext0 }}>{label}</label>
               <input
+                type={type}
+                disabled={status === 'loading'}
                 value={form[key]}
-                onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+                onChange={(e) => {
+                  setForm((f) => ({ ...f, [key]: e.target.value }));
+                  if (status === 'error') setStatus('idle');
+                }}
                 placeholder={ph}
                 style={{
                   background: COLORS.surface0,
@@ -95,17 +153,23 @@ export function Workspace4(): React.ReactElement {
                   outline: 'none',
                   width: '100%',
                   transition: 'border .2s',
+                  opacity: status === 'loading' ? 0.7 : 1,
                 }}
                 onFocus={(e) => (e.currentTarget.style.borderColor = fc)}
                 onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,.08)')}
               />
             </div>
           ))}
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: 3, flex: 1 }}>
             <label style={{ fontSize: '0.84rem', color: COLORS.subtext0 }}>Message</label>
             <textarea
+              disabled={status === 'loading'}
               value={form.msg}
-              onChange={(e) => setForm((f) => ({ ...f, msg: e.target.value }))}
+              onChange={(e) => {
+                setForm((f) => ({ ...f, msg: e.target.value }));
+                if (status === 'error') setStatus('idle');
+              }}
               placeholder="Write your message..."
               style={{
                 background: COLORS.surface0,
@@ -121,41 +185,80 @@ export function Workspace4(): React.ReactElement {
                 minHeight: 60,
                 transition: 'border .2s',
                 width: '100%',
+                opacity: status === 'loading' ? 0.7 : 1,
               }}
               onFocus={(e) => (e.currentTarget.style.borderColor = COLORS.teal)}
               onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,.08)')}
             />
           </div>
+
+          {/* Error Banner */}
+          {status === 'error' && errorMessage && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '8px 12px',
+                borderRadius: 8,
+                background: 'rgba(243,139,168,0.12)',
+                border: `1px solid ${COLORS.red}44`,
+                color: COLORS.red,
+                fontSize: '0.82rem',
+                lineHeight: 1.4,
+              }}
+            >
+              <AlertCircle size={16} style={{ flexShrink: 0 }} />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
           <button
-            onClick={handleSend}
+            type="submit"
+            disabled={status === 'loading'}
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 7,
-              background: sent ? 'rgba(166,227,161,.15)' : 'rgba(203,166,247,.15)',
-              border: `1px solid ${sent ? 'rgba(166,227,161,.3)' : 'rgba(203,166,247,.3)'}`,
+              background:
+                status === 'success'
+                  ? 'rgba(166,227,161,.2)'
+                  : status === 'loading'
+                  ? 'rgba(203,166,247,.08)'
+                  : 'rgba(203,166,247,.15)',
+              border: `1px solid ${
+                status === 'success'
+                  ? 'rgba(166,227,161,.4)'
+                  : status === 'loading'
+                  ? 'rgba(203,166,247,.15)'
+                  : 'rgba(203,166,247,.3)'
+              }`,
               borderRadius: 8,
               padding: 9,
-              cursor: 'pointer',
-              color: sent ? COLORS.green : COLORS.mauve,
+              cursor: status === 'loading' ? 'not-allowed' : 'pointer',
+              color: status === 'success' ? COLORS.green : COLORS.mauve,
               fontFamily: "'IBM Plex Sans Arabic',sans-serif",
               fontSize: '0.98rem',
               fontWeight: 600,
               transition: 'all .25s',
             }}
           >
-            {sent ? (
+            {status === 'loading' ? (
               <>
-                <CheckCircle size={19} /> Sent!
+                <Loader2 size={19} className="blink" style={{ animation: 'spin 1s linear infinite' }} /> Sending...
+              </>
+            ) : status === 'success' ? (
+              <>
+                <CheckCircle size={19} /> Message Sent!
               </>
             ) : (
               <>
-                <Send size={19} /> Send
+                <Send size={19} /> Send Message
               </>
             )}
           </button>
-        </div>
+        </form>
       </Win>
 
       {/* Quote */}
