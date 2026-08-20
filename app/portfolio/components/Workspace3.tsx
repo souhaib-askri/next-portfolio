@@ -32,53 +32,7 @@ const PROJECT_ICONS: Record<string, React.ComponentType<{ size?: number; color?:
   'productivity-launcher': Smartphone,
 };
 
-const LOGO_BASE = '/logos/tech';
-const matchLogo = (t: string) => {
-  const n = t.toLowerCase();
-  if (n.includes('react')) return 'react.svg';
-  if (n.includes('next')) return 'nextjs.svg';
-  if (n.includes('node')) return 'nodejs.svg';
-  if (n.includes('nest')) return 'nestjs.svg';
-  if (n.includes('typescript')) return 'typescript.svg';
-  if (n.includes('python')) return 'python.svg';
-  if (n.includes('fastapi')) return 'fastapi.svg';
-  if (n.includes('flask')) return 'flask.svg';
-  if (n.includes('pandas')) return 'pandas.svg';
-  if (n.includes('numpy')) return 'numpy.svg';
-  if (n.includes('postgres')) return 'postgresql.svg';
-  if (n.includes('docker')) return 'docker.svg';
-  if (n.includes('compose')) return 'docker.svg';
-  if (n.includes('kotlin')) return 'kotlin.svg';
-  if (n.includes('jetpack')) return 'jetpackcompose.svg';
-  if (n.includes('langchain')) return 'langchain.svg';
-  if (n.includes('huggingface')) return 'huggingface.svg';
-  if (n.includes('vercel')) return 'vercel.svg';
-  if (n.includes('jupyter')) return 'jupyter.svg';
-  if (n.includes('scikit')) return 'scikitlearn.svg';
-  if (n.includes('streamlit')) return 'streamlit.svg';
-  if (n.includes('action')) return 'githubactions.svg';
-  return null;
-};
-
-const renderLogos = (techs: string[], max = 4) => {
-  const seen = new Set<string>();
-  const logos: string[] = [];
-  for (const t of techs) {
-    const f = matchLogo(t);
-    if (f && !seen.has(f)) { seen.add(f); logos.push(f); }
-  }
-  const trimmed = logos.slice(0, max);
-  const diff = logos.length - max;
-  if (!trimmed.length) return null;
-  return (
-    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-      {trimmed.map(l => (
-        <img key={l} src={`${LOGO_BASE}/${l}`} alt="" style={{ width: 18, height: 18, objectFit: 'contain' }} />
-      ))}
-      {diff > 0 && <span style={{ fontSize: '0.65rem', color: COLORS.overlay0, fontWeight: 700 }}>+{diff}</span>}
-    </div>
-  );
-};
+import { TechLogo, renderTechLogos } from './TechLogo';
 
 // ─── Project Stats (terminal style like WS1 neofetch) ─────────────────────
 function ProjectStats() {
@@ -253,30 +207,52 @@ function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; o
                     <div key={cat}>
                       <div style={{ fontSize: '0.75rem', color: COLORS.overlay1, fontWeight: 700, marginBottom: 8, textTransform: 'capitalize' }}>{cat}</div>
                       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {techs.map((t: string) => {
-                          const logo = matchLogo(t);
-                          return (
-                            <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 500,
-                              padding: '4px 12px', borderRadius: 8, background: COLORS.surface1, color: COLORS.text, border: `1px solid rgba(255,255,255,.04)` }}>
-                              {logo && <img src={`${LOGO_BASE}/${logo}`} alt="" style={{ width: 14, height: 14 }} />}{t}
-                            </span>
-                          );
-                        })}
+                        {techs.map((t: string) => (
+                          <span
+                            key={t}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 7,
+                              fontSize: '0.82rem',
+                              fontWeight: 500,
+                              padding: '5px 12px 5px 8px',
+                              borderRadius: 8,
+                              background: COLORS.surface1,
+                              color: COLORS.text,
+                              border: `1px solid rgba(255,255,255,.06)`,
+                            }}
+                          >
+                            <TechLogo label={t} size={20} />
+                            <span>{t}</span>
+                          </span>
+                        ))}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : techFlat.length > 0 && (
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {techFlat.map((t: string) => {
-                    const logo = matchLogo(t);
-                    return (
-                      <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', fontWeight: 500,
-                        padding: '4px 12px', borderRadius: 8, background: COLORS.surface1, color: COLORS.text, border: `1px solid rgba(255,255,255,.04)` }}>
-                        {logo && <img src={`${LOGO_BASE}/${logo}`} alt="" style={{ width: 14, height: 14 }} />}{t}
-                      </span>
-                    );
-                  })}
+                  {techFlat.map((t: string) => (
+                    <span
+                      key={t}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 7,
+                        fontSize: '0.82rem',
+                        fontWeight: 500,
+                        padding: '5px 12px 5px 8px',
+                        borderRadius: 8,
+                        background: COLORS.surface1,
+                        color: COLORS.text,
+                        border: `1px solid rgba(255,255,255,.06)`,
+                      }}
+                    >
+                      <TechLogo label={t} size={20} />
+                      <span>{t}</span>
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
@@ -354,8 +330,8 @@ function FeaturedCard({ project, themeColor, onClick }: {
 
         {/* Tech logos row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, borderTop: `1px solid rgba(255,255,255,.04)` }}>
-          <div style={{ background: COLORS.mantle, padding: '5px 10px', borderRadius: 99, border: `1px solid rgba(255,255,255,.04)` }}>
-            {renderLogos(allTechs, 4)}
+          <div style={{ background: COLORS.mantle, padding: '4px 8px', borderRadius: 99, border: `1px solid rgba(255,255,255,.04)` }}>
+            {renderTechLogos(allTechs, 4)}
           </div>
           <span style={{ fontSize: '0.75rem', color: COLORS.overlay1, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
             Details <ArrowUpRight size={12} />
@@ -388,7 +364,7 @@ function MiniToolCard({ project, themeColor, onClick }: {
           {project.description}
         </div>
       </div>
-      <div style={{ flexShrink: 0 }}>{renderLogos(project.technologies, 2)}</div>
+      <div style={{ flexShrink: 0 }}>{renderTechLogos(project.technologies, 2)}</div>
     </div>
   );
 }
