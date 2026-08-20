@@ -101,7 +101,7 @@ function NeoSectionLabel({ text, color }: { text: string; color: string }) {
         }}
       >
         <span style={{ flex: '0 0 auto' }}>{text}</span>
-        <span style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${color}44, transparent)` }} />
+        <span style={{ flex: 1, height: 1, background: `${color}33` }} />
       </span>
     </>
   );
@@ -158,14 +158,6 @@ function SystemMonitor() {
                   position: 'relative',
                 }}
               >
-                {isActive && (
-                  <div style={{
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    background: `linear-gradient(180deg, ${t.color}22 0%, transparent 100%)`,
-                    pointerEvents: 'none',
-                  }} />
-                )}
                 <t.Icon size={16} color={isActive ? t.color : COLORS.overlay1} style={{ position: 'relative', zIndex: 2 }} />
                 <span style={{
                   fontSize: '0.68rem',
@@ -305,9 +297,7 @@ export function Workspace1(): React.ReactElement {
         gap: 9,
         padding: 11,
         height: '100%',
-        background: `radial-gradient(ellipse 70% 50% at 15% 20%,rgba(203,166,247,.07) 0%,transparent 60%),
-                    radial-gradient(ellipse 50% 40% at 85% 80%,rgba(137,180,250,.05) 0%,transparent 60%),
-                    ${COLORS.base}`,
+        background: COLORS.base,
       }}
     >
       {/* Combined Terminal / Home */}
@@ -370,7 +360,7 @@ export function Workspace1(): React.ReactElement {
                   <NeoSectionLabel text="▍ Profile" color={COLORS.green} />
                   <NeoRow label="Identity" color={COLORS.green}>{personal.name}</NeoRow>
                   <NeoRow label="Title" color={COLORS.green}>{personal.title}</NeoRow>
-                  <NeoRow label="Location" color={COLORS.green}>{personal.location} 🇹🇳</NeoRow>
+                  <NeoRow label="Location" color={COLORS.green}>{personal.location}</NeoRow>
                   <NeoRow label="Status" color={COLORS.green}>
                     <span style={{ color: COLORS.teal }}>●</span> Open to opportunities
                   </NeoRow>
@@ -442,7 +432,7 @@ export function Workspace1(): React.ReactElement {
               <span style={{ color: COLORS.overlay0, fontSize: '0.82rem', fontFamily: "'JetBrains Mono', monospace" }}>#</span>
               <span style={{ fontSize: '1.15rem', fontWeight: 700, color: COLORS.text }}>About Me</span>
             </div>
-            <div style={{ height: 2, width: '100%', background: `linear-gradient(90deg, ${COLORS.mauve}, ${COLORS.blue}, transparent)`, borderRadius: 2 }} />
+            <div style={{ height: 1, width: '100%', background: COLORS.surface1, borderRadius: 1 }} />
           </div>
 
           {/* Bio — concise & impactful */}

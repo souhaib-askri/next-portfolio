@@ -33,9 +33,7 @@ export function Workspace4(): React.ReactElement {
         gap: 9,
         padding: 11,
         height: '100%',
-        background: `radial-gradient(ellipse 60% 50% at 20% 30%,rgba(166,227,161,.07) 0%,transparent 60%),
-                    radial-gradient(ellipse 50% 40% at 80% 70%,rgba(180,190,254,.05) 0%,transparent 60%),
-                    ${COLORS.base}`,
+        background: COLORS.base,
       }}
     >
       {/* Links — full row */}

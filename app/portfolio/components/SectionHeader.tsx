@@ -28,7 +28,7 @@ export function SectionHeader({ icon: Icon, label, color = COLORS.lavender }: Se
         <Icon size={18} color={color} />
       </div>
       <span style={{ fontSize: '1.08rem', fontWeight: 600, color: COLORS.text, letterSpacing: '.2px' }}>{label}</span>
-      <div style={{ flex: 1, height: 1, background: `linear-gradient(to left, transparent, ${COLORS.surface1})` }} />
+      <div style={{ flex: 1, height: 1, background: COLORS.surface1, opacity: 0.5 }} />
     </div>
   );
 }

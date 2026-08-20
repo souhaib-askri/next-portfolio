@@ -253,7 +253,7 @@ export function GlobalStyle(): React.ReactElement {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+        background: rgba(255,255,255,0.05);
         opacity: 0;
         transition: opacity 0.2s;
         z-index: 1;

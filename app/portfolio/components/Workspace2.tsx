@@ -19,7 +19,6 @@ const DOMAIN_WEB = {
   title: 'Web Development',
   icon: Globe,
   color: COLORS.blue,
-  gradient: `${COLORS.mauve},${COLORS.blue}`,
   sections: [
     {
       label: 'Frontend',
@@ -52,7 +51,6 @@ const DOMAIN_AI = {
   title: 'Data & AI',
   icon: Brain,
   color: COLORS.pink,
-  gradient: `${COLORS.pink},${COLORS.mauve}`,
   sections: [
     {
       label: 'Data Analysis',
@@ -83,7 +81,6 @@ const DOMAIN_DEVOPS = {
   title: 'DevOps & Infrastructure',
   icon: Container,
   color: COLORS.green,
-  gradient: `${COLORS.green},${COLORS.teal}`,
   sections: [
     {
       label: 'Containers & CI/CD',
@@ -378,7 +375,7 @@ function SkillModal({ domain, onClose }: { domain: DomainData; onClose: () => vo
             position: 'relative',
           }}
         >
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent,${domain.color},transparent)`, opacity: 0.5 }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: domain.color, opacity: 0.8 }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{
               width: 44, height: 44,
@@ -501,14 +498,14 @@ function SkillDomainWin({ domain, delay, row }: { domain: DomainData; delay: num
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
-            background: `linear-gradient(135deg,${domain.gradient})`,
+            background: domain.color,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
           }}>
-            <domain.icon size={16} color="#111" />
+            <domain.icon size={16} color={COLORS.base} />
           </div>
           <span style={{ fontSize: '1rem', fontWeight: 700, color: COLORS.text }}>{domain.title}</span>
-          <div style={{ flex: 1, height: 1, background: `linear-gradient(to left,transparent,${COLORS.surface1})` }} />
+          <div style={{ flex: 1, height: 1, background: COLORS.surface1, opacity: 0.5 }} />
         </div>
 
         {/* Two sub-sections side by side */}
@@ -640,7 +637,7 @@ function TechStackSlideshow() {
             width: '100%',
             aspectRatio: '16/9',
             maxHeight: 200,
-            background: `linear-gradient(135deg,${COLORS.surface0},${COLORS.surface1})`,
+            background: COLORS.surface0,
             borderRadius: 12,
             border: `1px dashed rgba(255,255,255,.12)`,
             display: 'flex',
@@ -655,12 +652,6 @@ function TechStackSlideshow() {
             overflow: 'hidden',
           }}
         >
-          {/* Decorative gradient */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: `radial-gradient(ellipse 80% 60% at 50% 50%, rgba(137,180,250,.07), transparent)`,
-          }} />
           <ImageIcon size={36} color={COLORS.overlay0} />
           <div style={{ fontSize: '0.75rem', color: COLORS.overlay0, fontFamily: "'JetBrains Mono',monospace" }}>
             image placeholder
@@ -784,11 +775,7 @@ export function Workspace2(): React.ReactElement {
         gap: 9,
         padding: 11,
         height: '100%',
-        background: `
-          radial-gradient(ellipse 60% 50% at 75% 10%, rgba(137,180,250,.07) 0%, transparent 60%),
-          radial-gradient(ellipse 45% 40% at 20% 90%, rgba(203,166,247,.06) 0%, transparent 60%),
-          ${COLORS.base}
-        `,
+        background: COLORS.base,
       }}
     >
       {/* Column 1 — Skill Domain Windows */}

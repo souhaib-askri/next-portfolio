@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import {
   Rocket, X, GitBranch,
   Layers, CheckCircle2, Clock3, Star, FolderGit2,
-  Activity, Code2, ArrowUpRight
+  Activity, Code2, ArrowUpRight, BrainCircuit, Gamepad2, Smartphone, Package
 } from 'lucide-react';
 import { COLORS } from '../constants';
 import { Win } from './Win';
@@ -26,8 +26,10 @@ const THEME_COLORS = [
   COLORS.yellow,
 ];
 
-const EMOJI: Record<string, string> = {
-  'plan-ai': '🧠', 'bluff-arena': '🃏', 'productivity-launcher': '📱',
+const PROJECT_ICONS: Record<string, React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>> = {
+  'plan-ai': BrainCircuit,
+  'bluff-arena': Gamepad2,
+  'productivity-launcher': Smartphone,
 };
 
 const LOGO_BASE = '/logos/tech';
@@ -162,7 +164,7 @@ function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; o
   const isDone = 'status' in project && typeof project.status === 'string' && !project.status.includes('Development');
   const github = 'github' in project && project.github ? project.github : null;
   const subtitle = 'subtitle' in project && project.subtitle ? project.subtitle : null;
-  const em = 'id' in project ? EMOJI[project.id as string] || '📦' : '📦';
+  const IconComp = ('id' in project && project.id ? PROJECT_ICONS[project.id as string] : null) || Package;
 
   if (!mounted) return null;
 
@@ -183,12 +185,15 @@ function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; o
         <div style={{
           padding: '32px 32px 24px', borderBottom: `1px solid rgba(255,255,255,.06)`,
           display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
-          background: `radial-gradient(100% 100% at 50% 0%, ${themeColor}15 0%, transparent 100%)`
+          background: COLORS.crust,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-            <div style={{ fontSize: 42, width: 64, height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: COLORS.surface0, borderRadius: 16, border: `1px solid rgba(255,255,255,.08)`, boxShadow: '0 8px 16px rgba(0,0,0,.2)' }}>
-              {em}
+            <div style={{
+              width: 56, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: COLORS.surface0, borderRadius: 16, border: `1px solid rgba(255,255,255,.08)`,
+              boxShadow: '0 8px 16px rgba(0,0,0,.2)', flexShrink: 0,
+            }}>
+              <IconComp size={28} color={themeColor} />
             </div>
             <div>
               <div style={{ fontSize: '1.4rem', fontWeight: 800, color: COLORS.text, marginBottom: 4, letterSpacing: '-0.02em' }}>{project.title}</div>
@@ -301,7 +306,7 @@ function ProjectModal({ project, onClose, themeColor }: { project: AnyProject; o
 function FeaturedCard({ project, themeColor, onClick }: {
   project: typeof projectsData[0]; themeColor: string; onClick: () => void;
 }) {
-  const em = EMOJI[project.id] || '📦';
+  const IconComp = PROJECT_ICONS[project.id] || Package;
   const desc = project.description.length > 100 ? project.description.slice(0, 100) + '...' : project.description;
   const allTechs = Object.values(project.technologies).flat() as string[];
   const isDone = !project.status.includes('Development');
@@ -319,10 +324,13 @@ function FeaturedCard({ project, themeColor, onClick }: {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
-            fontSize: 24, width: 38, height: 38, borderRadius: 10,
-            background: 'rgba(0,0,0,.25)', backdropFilter: 'blur(8px)',
+            width: 36, height: 36, borderRadius: 10,
+            background: 'rgba(0,0,0,.25)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>{em}</div>
+            flexShrink: 0,
+          }}>
+            <IconComp size={20} color="#fff" />
+          </div>
           <span style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.01em',
             textShadow: '0 1px 4px rgba(0,0,0,.3)' }}>{project.title}</span>
         </div>
@@ -394,9 +402,7 @@ export function Workspace3(): React.ReactElement {
       <div className="ws-grid" style={{
         display: 'grid', gridTemplateColumns: '7fr 4fr', gridTemplateRows: '1fr 1fr',
         gap: 9, padding: 11, height: '100%',
-        background: `radial-gradient(ellipse 60% 50% at 30% 20%, rgba(203,166,247,.06) 0%, transparent 60%),
-                     radial-gradient(ellipse 50% 40% at 80% 80%, rgba(137,180,250,.05) 0%, transparent 60%),
-                     ${COLORS.base}`,
+        background: COLORS.base,
       }}>
         {/* Col 1: Featured Projects — spans 2 rows */}
         <Win title="App Center / Featured Projects" delay={0} style={{ gridRow: '1 / 3', display: 'flex', flexDirection: 'column' }}>

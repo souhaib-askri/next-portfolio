@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 import { COLORS } from '../constants';
 import personal from '@/data/personal.json';
 
@@ -34,7 +34,21 @@ export function Notification({ show, onClose }: NotificationProps): React.ReactE
         WebkitBackdropFilter: 'blur(20px)',
       }}
     >
-      <span style={{ fontSize: 22 }}>🐧</span>
+      <div
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: 'rgba(180,190,254,0.12)',
+          border: '1px solid rgba(180,190,254,0.25)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <Sparkles size={20} color={COLORS.lavender} />
+      </div>
       <div>
         <div style={{ fontWeight: 600, color: COLORS.text, fontSize: '0.95rem' }}>Welcome to {personal.name.split(' ')[0]}&apos;s Portfolio!</div>
         <div style={{ color: COLORS.subtext0, fontSize: '0.82rem', marginTop: 1 }}>Use workspace names or ← → to navigate</div>
