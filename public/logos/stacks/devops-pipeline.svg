@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <rect width="400" height="200" rx="12" fill="#1e1e2e"/>
+
+  <!-- Dev writes code -->
+  <rect x="16" y="56" width="76" height="50" rx="8" fill="#181825" stroke="#cba6f7" stroke-width="1.5"/>
+  <text x="54" y="76" text-anchor="middle" fill="#cba6f7" font-size="9" font-weight="700" font-family="monospace">Code</text>
+  <text x="54" y="90" text-anchor="middle" fill="#6c7086" font-size="7" font-family="monospace">git push</text>
+
+  <!-- Arrow Code → GitHub -->
+  <line x1="92" y1="81" x2="120" y2="81" stroke="#cdd6f4" stroke-width="1.5" marker-end="url(#arrowW5)"/>
+
+  <!-- GitHub -->
+  <rect x="120" y="40" width="100" height="82" rx="10" fill="#181825" stroke="#cdd6f4" stroke-width="1.5"/>
+  <text x="170" y="62" text-anchor="middle" fill="#cdd6f4" font-size="11" font-weight="700" font-family="monospace">GitHub</text>
+  <text x="170" y="78" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">Actions CI/CD</text>
+  <rect x="132" y="86" width="76" height="16" rx="4" fill="#313244"/>
+  <text x="170" y="97" text-anchor="middle" fill="#a6e3a1" font-size="7" font-weight="600" font-family="monospace">✓ Build · Test</text>
+  <rect x="132" y="104" width="76" height="12" rx="4" fill="#313244"/>
+  <text x="170" y="113" text-anchor="middle" fill="#89dceb" font-size="7" font-weight="600" font-family="monospace">✓ Lint · Type</text>
+
+  <!-- Arrow GitHub → Docker -->
+  <line x1="220" y1="70" x2="254" y2="45" stroke="#89dceb" stroke-width="1.5" marker-end="url(#arrowS5)"/>
+
+  <!-- Docker Build -->
+  <rect x="254" y="18" width="130" height="54" rx="8" fill="#181825" stroke="#89dceb" stroke-width="1.5"/>
+  <text x="319" y="40" text-anchor="middle" fill="#89dceb" font-size="11" font-weight="700" font-family="monospace">Docker</text>
+  <text x="319" y="54" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">Build · Push Image</text>
+  <text x="319" y="64" text-anchor="middle" fill="#585b70" font-size="7" font-family="monospace">Compose · Registry</text>
+
+  <!-- Arrow GitHub → Nginx -->
+  <line x1="220" y1="100" x2="254" y2="120" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowG5)"/>
+
+  <!-- Nginx -->
+  <rect x="254" y="100" width="130" height="44" rx="8" fill="#181825" stroke="#a6e3a1" stroke-width="1.5"/>
+  <text x="319" y="120" text-anchor="middle" fill="#a6e3a1" font-size="11" font-weight="700" font-family="monospace">Nginx</text>
+  <text x="319" y="134" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">Reverse Proxy · SSL</text>
+
+  <!-- Arrow Nginx → Vercel -->
+  <line x1="319" y1="144" x2="319" y2="158" stroke="#cdd6f4" stroke-width="1.2" stroke-dasharray="3 2"/>
+
+  <!-- Vercel / Deploy -->
+  <rect x="254" y="158" width="130" height="30" rx="6" fill="#181825" stroke="#a6adc8" stroke-width="1"/>
+  <text x="319" y="177" text-anchor="middle" fill="#a6adc8" font-size="10" font-weight="700" font-family="monospace">Vercel · Netlify</text>
+
+  <!-- Live badge -->
+  <rect x="16" y="150" width="88" height="30" rx="6" fill="#181825" stroke="#a6e3a1" stroke-width="1"/>
+  <circle cx="32" cy="165" r="4" fill="#a6e3a1"/>
+  <text x="64" y="169" text-anchor="middle" fill="#a6e3a1" font-size="9" font-weight="700" font-family="monospace">LIVE</text>
+
+  <!-- Flow label -->
+  <text x="200" y="196" text-anchor="middle" fill="#45475a" font-size="7" font-family="monospace">Push → CI/CD → Build → Deploy → Live</text>
+
+  <defs>
+    <marker id="arrowW5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cdd6f4"/>
+    </marker>
+    <marker id="arrowS5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#89dceb"/>
+    </marker>
+    <marker id="arrowG5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#a6e3a1"/>
+    </marker>
+  </defs>
+</svg>

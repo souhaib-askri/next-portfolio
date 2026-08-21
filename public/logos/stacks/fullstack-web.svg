@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <!-- Background -->
+  <rect width="400" height="200" rx="12" fill="#1e1e2e"/>
+  
+  <!-- Grid lines -->
+  <line x1="0" y1="100" x2="400" y2="100" stroke="#313244" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <line x1="200" y1="0" x2="200" y2="200" stroke="#313244" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+  <!-- Browser (Frontend) -->
+  <rect x="24" y="24" width="140" height="72" rx="8" fill="#181825" stroke="#89b4fa" stroke-width="1.5"/>
+  <rect x="24" y="24" width="140" height="18" rx="8" fill="#313244"/>
+  <rect x="24" y="36" width="140" height="6" rx="0" fill="#313244"/>
+  <circle cx="36" cy="33" r="3" fill="#f38ba8"/>
+  <circle cx="46" cy="33" r="3" fill="#f9e2af"/>
+  <circle cx="56" cy="33" r="3" fill="#a6e3a1"/>
+  <text x="94" y="64" text-anchor="middle" fill="#89b4fa" font-size="11" font-weight="700" font-family="monospace">Next.js</text>
+  <text x="94" y="80" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">React · SSR · SSG</text>
+
+  <!-- Arrow Frontend → Backend -->
+  <line x1="164" y1="60" x2="220" y2="60" stroke="#cba6f7" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <text x="192" y="54" text-anchor="middle" fill="#cba6f7" font-size="7" font-family="monospace">API</text>
+
+  <!-- Backend -->
+  <rect x="220" y="24" width="156" height="72" rx="8" fill="#181825" stroke="#f38ba8" stroke-width="1.5"/>
+  <text x="298" y="56" text-anchor="middle" fill="#f38ba8" font-size="11" font-weight="700" font-family="monospace">NestJS</text>
+  <text x="298" y="72" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">Guards · Pipes · DTOs</text>
+  <text x="298" y="84" text-anchor="middle" fill="#585b70" font-size="7" font-family="monospace">REST · WebSocket · tRPC</text>
+
+  <!-- Database -->
+  <rect x="120" y="118" width="160" height="60" rx="8" fill="#181825" stroke="#89b4fa" stroke-width="1.5"/>
+  <ellipse cx="200" cy="126" rx="70" ry="8" fill="#313244" stroke="#89b4fa" stroke-width="0.8"/>
+  <text x="200" y="152" text-anchor="middle" fill="#89b4fa" font-size="11" font-weight="700" font-family="monospace">PostgreSQL</text>
+  <text x="200" y="166" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">Prisma ORM · Migrations</text>
+
+  <!-- Arrow Backend → DB -->
+  <line x1="298" y1="96" x2="250" y2="118" stroke="#94e2d5" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
+
+  <!-- Docker badge -->
+  <rect x="24" y="130" width="76" height="36" rx="6" fill="#181825" stroke="#89dceb" stroke-width="1"/>
+  <text x="62" y="150" text-anchor="middle" fill="#89dceb" font-size="10" font-weight="700" font-family="monospace">Docker</text>
+  <text x="62" y="160" text-anchor="middle" fill="#585b70" font-size="7" font-family="monospace">Compose</text>
+
+  <!-- Vercel badge -->
+  <rect x="310" y="130" width="66" height="36" rx="6" fill="#181825" stroke="#a6adc8" stroke-width="1"/>
+  <text x="343" y="150" text-anchor="middle" fill="#a6adc8" font-size="10" font-weight="700" font-family="monospace">Vercel</text>
+  <text x="343" y="160" text-anchor="middle" fill="#585b70" font-size="7" font-family="monospace">Deploy</text>
+
+  <!-- Markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cba6f7"/>
+    </marker>
+    <marker id="arrowTeal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94e2d5"/>
+    </marker>
+  </defs>
+</svg>

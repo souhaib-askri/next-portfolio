@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Home, Zap, Rocket, Radio } from 'lucide-react';
+import { Home, Activity, Zap, Rocket, Radio } from 'lucide-react';
 import { Workspace } from './constants';
 import { GlobalStyle } from './styles';
 import { Workspace1 } from './components/Workspace1';
+import { WorkspaceMonitor } from './components/WorkspaceMonitor';
 import { Workspace2 } from './components/Workspace2';
 import { Workspace3 } from './components/Workspace3';
 import { Workspace4 } from './components/Workspace4';
@@ -14,9 +15,10 @@ import { Notification } from './components/Notification';
 
 const WORKSPACES: Workspace[] = [
   { id: 0, label: 'Home', icon: Home, component: Workspace1 },
-  { id: 1, label: 'Skills', icon: Zap, component: Workspace2 },
-  { id: 2, label: 'Projects', icon: Rocket, component: Workspace3 },
-  { id: 3, label: 'Contact', icon: Radio, component: Workspace4 },
+  { id: 1, label: 'Monitor', icon: Activity, component: WorkspaceMonitor },
+  { id: 2, label: 'Skills', icon: Zap, component: Workspace2 },
+  { id: 3, label: 'Projects', icon: Rocket, component: Workspace3 },
+  { id: 4, label: 'Contact', icon: Radio, component: Workspace4 },
 ];
 
 export default function Portfolio(): React.ReactElement {
@@ -33,7 +35,7 @@ export default function Portfolio(): React.ReactElement {
   // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' && current < 3) setCurrent((c) => c + 1);
+      if (e.key === 'ArrowRight' && current < WORKSPACES.length - 1) setCurrent((c) => c + 1);
       if (e.key === 'ArrowLeft' && current > 0) setCurrent((c) => c - 1);
     };
     window.addEventListener('keydown', handler);
@@ -47,7 +49,7 @@ export default function Portfolio(): React.ReactElement {
     };
     const onEnd = (e: TouchEvent) => {
       const dx = e.changedTouches[0].clientX - tx.current;
-      if (dx < -60 && current < 3) setCurrent((c) => c + 1);
+      if (dx < -60 && current < WORKSPACES.length - 1) setCurrent((c) => c + 1);
       if (dx > 60 && current > 0) setCurrent((c) => c - 1);
     };
     window.addEventListener('touchstart', onStart);

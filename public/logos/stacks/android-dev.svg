@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <rect width="400" height="200" rx="12" fill="#1e1e2e"/>
+
+  <!-- UI Layer -->
+  <rect x="100" y="12" width="200" height="44" rx="8" fill="#181825" stroke="#89dceb" stroke-width="1.5"/>
+  <text x="200" y="32" text-anchor="middle" fill="#89dceb" font-size="11" font-weight="700" font-family="monospace">Jetpack Compose</text>
+  <text x="200" y="48" text-anchor="middle" fill="#6c7086" font-size="8" font-family="monospace">Declarative UI · Material 3 · RTL</text>
+
+  <!-- Arrow UI → ViewModel -->
+  <line x1="200" y1="56" x2="200" y2="72" stroke="#cba6f7" stroke-width="1.5" marker-end="url(#arrowP4)"/>
+
+  <!-- ViewModel -->
+  <rect x="110" y="72" width="180" height="38" rx="8" fill="#181825" stroke="#cba6f7" stroke-width="1.5"/>
+  <text x="200" y="90" text-anchor="middle" fill="#cba6f7" font-size="10" font-weight="700" font-family="monospace">ViewModel (MVVM)</text>
+  <text x="200" y="102" text-anchor="middle" fill="#6c7086" font-size="7" font-family="monospace">State · Flow · Coroutines</text>
+
+  <!-- Arrow ViewModel → Domain -->
+  <line x1="200" y1="110" x2="200" y2="126" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowG4)"/>
+
+  <!-- Domain / Use Cases -->
+  <rect x="80" y="126" width="240" height="34" rx="8" fill="#181825" stroke="#a6e3a1" stroke-width="1.5"/>
+  <text x="200" y="146" text-anchor="middle" fill="#a6e3a1" font-size="10" font-weight="700" font-family="monospace">Domain Layer — Use Cases</text>
+  <text x="200" y="156" text-anchor="middle" fill="#585b70" font-size="7" font-family="monospace">Clean Architecture · Business Logic</text>
+
+  <!-- Arrow Domain → Data -->
+  <line x1="200" y1="160" x2="200" y2="172" stroke="#f9e2af" stroke-width="1.5" marker-end="url(#arrowY4)"/>
+
+  <!-- Data Layer -->
+  <rect x="60" y="172" width="120" height="24" rx="6" fill="#181825" stroke="#f9e2af" stroke-width="1"/>
+  <text x="120" y="188" text-anchor="middle" fill="#f9e2af" font-size="8" font-weight="600" font-family="monospace">Room · DataStore</text>
+
+  <rect x="220" y="172" width="120" height="24" rx="6" fill="#181825" stroke="#f9e2af" stroke-width="1"/>
+  <text x="280" y="188" text-anchor="middle" fill="#f9e2af" font-size="8" font-weight="600" font-family="monospace">Retrofit · API</text>
+
+  <!-- Kotlin badge -->
+  <rect x="16" y="22" width="64" height="28" rx="6" fill="#181825" stroke="#cba6f7" stroke-width="1"/>
+  <text x="48" y="40" text-anchor="middle" fill="#cba6f7" font-size="9" font-weight="700" font-family="monospace">Kotlin</text>
+
+  <!-- Hilt badge -->
+  <rect x="320" y="22" width="64" height="28" rx="6" fill="#181825" stroke="#94e2d5" stroke-width="1"/>
+  <text x="352" y="40" text-anchor="middle" fill="#94e2d5" font-size="9" font-weight="700" font-family="monospace">Hilt DI</text>
+
+  <!-- Side label -->
+  <text x="48" y="100" text-anchor="middle" fill="#45475a" font-size="7" font-family="monospace" transform="rotate(-90 30 100)">Presentation</text>
+  <text x="370" y="100" text-anchor="middle" fill="#45475a" font-size="7" font-family="monospace" transform="rotate(90 370 100)">Data</text>
+
+  <defs>
+    <marker id="arrowP4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cba6f7"/>
+    </marker>
+    <marker id="arrowG4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#a6e3a1"/>
+    </marker>
+    <marker id="arrowY4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f9e2af"/>
+    </marker>
+  </defs>
+</svg>
